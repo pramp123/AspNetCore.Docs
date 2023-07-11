@@ -5,11 +5,12 @@ description: Build a Windows Presentation Foundation (WPF) app step-by-step.
 monikerRange: '>= aspnetcore-6.0'
 ms.author: riande
 ms.custom: mvc
-ms.date: 04/07/2022
-no-loc: [".NET MAUI", "Mac Catalyst", "Blazor Hybrid", Home, Privacy, Kestrel, appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
+ms.date: 11/15/2022
 uid: blazor/hybrid/tutorials/wpf
 ---
 # Build a Windows Presentation Foundation (WPF) Blazor app
+
+[!INCLUDE[](~/includes/not-latest-version.md)]
 
 This tutorial shows you how to build and run a WPF Blazor app. You learn how to:
 
@@ -18,12 +19,10 @@ This tutorial shows you how to build and run a WPF Blazor app. You learn how to:
 > * Add a Razor component to the project
 > * Run the app on Windows
 
-[!INCLUDE[](~/blazor/includes/blazor-hybrid-preview-notice.md)]
-
 ## Prerequisites
 
 * [Supported platforms (WPF documentation)](/dotnet/desktop/wpf/overview/)
-* [Visual Studio 2022 Preview](https://visualstudio.microsoft.com/vs/preview/) with the **.NET desktop development** workload
+* [Visual Studio 2022](https://visualstudio.microsoft.com/vs/) with the **.NET desktop development** workload
 
 ## Visual Studio workload
 
@@ -33,27 +32,31 @@ If the **.NET desktop development** workload isn't installed, use the Visual Stu
 
 ## Create a WPF Blazor project
 
-Start Visual Studio 2022 Preview.
-
-In the Start Window, select **Create a new project**:
+Launch Visual Studio. In the **Start Window**, select **Create a new project**:
 
 :::image type="content" source="wpf/_static/new-solution.png" alt-text="Create a new solution in Visual Studio.":::
 
-In the **Create a new project** dialog, filter the **Project type** drop-down to **Desktop**. Select the C# project template for **WPF Application** and select the **Next** button:
+In the **Create a new project** dialog, filter the **Project type** dropdown to **Desktop**. Select the C# project template for **WPF Application** and select the **Next** button:
 
 :::image type="content" source="wpf/_static/create-project.png" alt-text="Create a new project in Visual Studio.":::
 
-In the **Configure your new project** dialog, set the **Project name** to **`WpfBlazor`**, choose a suitable location for the project, and select the **Next** button.
+In the **Configure your new project** dialog:
+
+* Set the **Project name** to **:::no-loc text="WpfBlazor":::**.
+* Choose a suitable location for the project.
+* Select the **Next** button.
 
 :::image type="content" source="wpf/_static/configure-project.png" alt-text="Configure the project.":::
 
-In the **Additional information** dialog, select the framework version, which must be .NET 6.0 or later. Select the **Create** button:
+In the **Additional information** dialog, select the framework version with the **Framework** dropdown list. Select the **Create** button:
 
 :::image type="content" source="wpf/_static/additional-information.png" alt-text="The Additional Information dialog for the WPF project.":::
 
-Use [NuGet Package Manager](/nuget/consume-packages/install-use-packages-visual-studio) to install the [`Microsoft.AspNetCore.Components.WebView.Wpf`](https://nuget.org/packages/Microsoft.AspNetCore.Components.WebView.Wpf) preview NuGet package.
+Use [NuGet Package Manager](/nuget/consume-packages/install-use-packages-visual-studio) to install the [`Microsoft.AspNetCore.Components.WebView.Wpf`](https://nuget.org/packages/Microsoft.AspNetCore.Components.WebView.Wpf) NuGet package:
 
-In **Solution Explorer**, right-click the `WpfBlazor` project and select **Edit Project File** to open the project file (`WpfBlazor.csproj`).
+:::image type="content" source="wpf/_static/nuget-package-manager.png" alt-text="Use Nuget Package Manager in Visual Studio to install the Microsoft.AspNetCore.Components.WebView.Wpf NuGet package.":::
+
+In **Solution Explorer**, right-click the project's name, **:::no-loc text="WpfBlazor":::**, and select **Edit Project File** to open the project file (`WpfBlazor.csproj`).
 
 At the top of the project file, change the SDK to `Microsoft.NET.Sdk.Razor`:
 
@@ -61,15 +64,19 @@ At the top of the project file, change the SDK to `Microsoft.NET.Sdk.Razor`:
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 ```
 
-<!-- The following is a workaround for https://github.com/dotnet/wpf/issues/5697 (fixes https://github.com/dotnet/maui/issues/3526) -->
+<!--
+    The following is a workaround for https://github.com/dotnet/wpf/issues/5697 (fixes https://github.com/dotnet/maui/issues/3526).
+    Additional open issue on it: https://github.com/dotnet/maui/issues/5861
+-->
 
-Set the project's namespace, `WpfBlazor` in this tutorial, as the app's root namespace by adding the following property group to the project file:
+In the project file's existing `<PropertyGroup>` add the following markup to set the app's root namespace, which is `WpfBlazor` in this tutorial:
 
 ```xml
-<PropertyGroup>
-  <RootNameSpace>WpfBlazor</RootNameSpace>
-</PropertyGroup>
+<RootNamespace>WpfBlazor</RootNamespace>
 ```
+
+> [!NOTE]
+> The preceding guidance on setting the project's root namespace is a temporary workaround. For more information, see [[Blazor][Wpf] Root namespace related issue (dotnet/maui #5861)](https://github.com/dotnet/maui/issues/5861).
 
 Save the changes to the project file (`WpfBlazor.csproj`).
 
@@ -80,6 +87,8 @@ Add an `_Imports.razor` file to the root of the project with an [`@using`](xref:
 ```razor
 @using Microsoft.AspNetCore.Components.Web
 ```
+
+Save the `_Imports.razor` file.
 
 Add a `wwwroot` folder to the project.
 
@@ -124,6 +133,20 @@ Add an `app.css` stylesheet to the `wwwroot/css` folder with the following conte
 ```css
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+h1:focus {
+    outline: none;
+}
+
+a, .btn-link {
+    color: #0071c1;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
 }
 
 .valid.modified:not([type=checkbox]) {
@@ -179,6 +202,8 @@ Add the following `Counter` component to the root of the project, which is the d
 }
 ```
 
+Save the `Counter` component (`Counter.razor`).
+
 If the `MainWindow` designer isn't open, open it by double-clicking the `MainWindow.xaml` file in **Solution Explorer**. In the `MainWindow` designer, replace the XAML code with the following:
 
 ```xaml
@@ -211,7 +236,7 @@ Add the namespace <xref:Microsoft.Extensions.DependencyInjection?displayProperty
 using Microsoft.Extensions.DependencyInjection;
 ```
 
-Inside the `MainWindow` constructor, above the `InitializeComponent()` method call, add the following code:
+Inside the `MainWindow` constructor, after the `InitializeComponent` method call, add the following code:
 
 ```csharp
 var serviceCollection = new ServiceCollection();
@@ -219,7 +244,10 @@ serviceCollection.AddWpfBlazorWebView();
 Resources.Add("services", serviceCollection.BuildServiceProvider());
 ```
 
-The final, complete C# code of `MainWindow.xaml.cs`:
+> [!NOTE]
+> The `InitializeComponent` method is generated by a source generator at app build time and added to the compilation object for the calling class.
+
+The final, complete C# code of `MainWindow.xaml.cs` with a [file-scoped namespace](/dotnet/csharp/language-reference/keywords/namespace) and comments removed:
 
 ```csharp
 using System;
@@ -238,21 +266,17 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace WpfBlazor
-{
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class MainWindow : Window
-    {
-        public MainWindow()
-        {
-            var serviceCollection = new ServiceCollection();
-            serviceCollection.AddWpfBlazorWebView();
-            Resources.Add("services", serviceCollection.BuildServiceProvider());
+namespace WpfBlazor;
 
-            InitializeComponent();
-        }
+public partial class MainWindow : Window
+{
+    public MainWindow()
+    {
+        InitializeComponent();
+
+        var serviceCollection = new ServiceCollection();
+        serviceCollection.AddWpfBlazorWebView();
+        Resources.Add("services", serviceCollection.BuildServiceProvider());
     }
 }
 ```

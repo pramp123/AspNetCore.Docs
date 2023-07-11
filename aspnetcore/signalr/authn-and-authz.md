@@ -6,7 +6,6 @@ monikerRange: '>= aspnetcore-3.1'
 ms.author: bradyg
 ms.custom: mvc
 ms.date: 2/05/2022
-no-loc: [".NET MAUI", "Mac Catalyst", "Blazor Hybrid", Home, Privacy, Kestrel, appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: signalr/authn-and-authz
 ---
 
@@ -106,7 +105,7 @@ var connection = new HubConnectionBuilder()
     .Build();
 ```
 
-<!--The Internet Explorer 11 desktop application will be retired and go out of support on June 15, 2022  https://docs.microsoft.com/en-us/troubleshoot/developer/browsers/security-privacy/prompt-for-username-and-password -->
+<!--The Internet Explorer 11 desktop application will be retired and go out of support on June 15, 2022  https://learn.microsoft.com/troubleshoot/developer/browsers/security-privacy/prompt-for-username-and-password -->
 Windows authentication is supported in Microsoft Edge, but not in all browsers. For example, in Chrome and Safari, attempting to use Windows authentication and WebSockets fails. When Windows authentication fails, the client attempts to fall back to other transports which might work.
 
 ### Use claims to customize identity handling

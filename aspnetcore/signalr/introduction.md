@@ -6,7 +6,6 @@ monikerRange: '>= aspnetcore-2.1'
 ms.author: bradyg
 ms.custom: mvc
 ms.date: 03/07/2022
-no-loc: [".NET MAUI", "Mac Catalyst", "Blazor Hybrid", Home, Privacy, Kestrel, appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: signalr/introduction
 ---
 # Overview of ASP.NET Core SignalR
@@ -30,6 +29,7 @@ Here are some features of SignalR for ASP.NET Core:
 * Sends messages to all connected clients simultaneously. For example, a chat room.
 * Sends messages to specific clients or groups of clients.
 * Scales to handle increasing traffic.
+* [SignalR Hub Protocol](https://github.com/dotnet/aspnetcore/blob/main/src/SignalR/docs/specs/HubProtocol.md)
 
 The source is hosted in a [SignalR repository on GitHub](https://github.com/dotnet/AspNetCore/tree/main/src/SignalR).
 
@@ -51,10 +51,13 @@ A hub is a high-level pipeline that allows a client and server to call methods o
 
 Hubs call client-side code by sending messages that contain the name and parameters of the client-side method. Objects sent as method parameters are deserialized using the configured protocol. The client tries to match the name to a method in the client-side code. When the client finds a match, it calls the method and passes to it the deserialized parameter data.
 
+[!INCLUDE[](~/includes/SignalR/es6.md)]
+
 ## Additional resources
 
-* [Microsoft Learn: Introduction to ASP.NET Core SignalR](/learn/modules/aspnet-core-signalr)
+* [Introduction to ASP.NET Core SignalR](/training/modules/aspnet-core-signalr)
 * [Get started with SignalR for ASP.NET Core](xref:tutorials/signalr)
 * [Supported Platforms](xref:signalr/supported-platforms)
 * [Hubs](xref:signalr/hubs)
 * [JavaScript client](xref:signalr/javascript-client)
+* [Browsers that don't support ECMAScript 6 (ES6)](xref:signalr/supported-platforms#es6)

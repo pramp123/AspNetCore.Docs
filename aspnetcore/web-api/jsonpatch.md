@@ -6,7 +6,6 @@ monikerRange: '>= aspnetcore-3.1'
 ms.author: riande
 ms.custom: mvc
 ms.date: 03/09/2022
-no-loc: [".NET MAUI", "Mac Catalyst", "Blazor Hybrid", Home, Privacy, Kestrel, appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: web-api/jsonpatch
 ---
 # JsonPatch in ASP.NET Core web API
@@ -29,6 +28,8 @@ JSON Patch support in ASP.NET Core web API is based on `Newtonsoft.Json` and req
 * <xref:Microsoft.Extensions.DependencyInjection.MvcServiceCollectionExtensions.AddRazorPages%2A>
 * <xref:Microsoft.Extensions.DependencyInjection.MvcServiceCollectionExtensions.AddControllersWithViews%2A>
 * <xref:Microsoft.Extensions.DependencyInjection.MvcServiceCollectionExtensions.AddControllers%2A>
+
+JsonPatch requires setting the `Content-Type` header to `application/json-patch+json`.
 
 ## Add support for JSON Patch when using System.Text.Json
 
@@ -249,7 +250,7 @@ To test the sample, run the app and send HTTP requests with the following settin
 
 * [IETF RFC 5789 PATCH method specification](https://tools.ietf.org/html/rfc5789)
 * [IETF RFC 6902 JSON Patch specification](https://tools.ietf.org/html/rfc6902)
-* [IETF RFC 6901 JSON Patch path format spec](https://tools.ietf.org/html/rfc6901)
+* [IETF RFC 6901 JSON Pointer](https://tools.ietf.org/html/rfc6901)
 * [JSON Patch documentation](https://jsonpatch.com/). Includes links to resources for creating JSON Patch documents.
 * [ASP.NET Core JSON Patch source code](https://github.com/dotnet/AspNetCore/tree/main/src/Features/JsonPatch/src)
 

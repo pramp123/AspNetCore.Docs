@@ -4,7 +4,6 @@ author: rick-anderson
 description: Learn how to create backend services using ASP.NET Core MVC to support native mobile apps.
 ms.author: riande
 ms.date: 2/12/2021
-no-loc: [".NET MAUI", "Mac Catalyst", "Blazor Hybrid", Home, Privacy, Kestrel, appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: mobile/native-mobile-backend
 ---
 # Create backend services for native mobile apps with ASP.NET Core
@@ -159,5 +158,5 @@ Once you've identified a common policy for your APIs, you can usually encapsulat
 
 - [Xamarin.Forms: Web Service Authentication](/xamarin/xamarin-forms/data-cloud/authentication/)
 - [Xamarin.Forms: Consume a RESTful Web Service](/xamarin/xamarin-forms/data-cloud/web-services/rest)
-- [Microsoft Learn: Consume REST web services in Xamarin Apps](/learn/modules/consume-rest-services/)
-- [Microsoft Learn: Create a web API with ASP.NET Core](/learn/modules/build-web-api-aspnet-core/)
+- [Consume REST web services in Xamarin Apps](/training/modules/consume-rest-services/)
+- [Create a web API with ASP.NET Core](/training/modules/build-web-api-aspnet-core/)

@@ -5,7 +5,6 @@ description: Discover topics related to authentication with Microsoft identity p
 ms.author: riande
 ms.date: 01/21/2020
 ms.custom: "mvc, seodec18"
-no-loc: [".NET MAUI", "Mac Catalyst", "Blazor Hybrid", Home, Privacy, Kestrel, appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: security/authentication/azure-active-directory/index
 ---
 # Azure Active Directory with ASP.NET Core
@@ -14,7 +13,7 @@ These tutorials and samples demonstrate authentication in ASP.NET Core using Mic
 
 ## Application Scenarios
 
-* [Quickstart: Add sign-in with Microsoft to an ASP.NET Core web app](/azure/active-directory/develop/quickstart-v2-aspnet-core-webapp)
+* [Quickstart: Add sign-in with Microsoft to an ASP.NET Core web app](/azure/active-directory/develop/web-app-quickstart?pivots=devlang-aspnet-core&tabs=windows)
 * [Web app that signs in users](/azure/active-directory/develop/scenario-web-app-sign-user-overview?tabs=aspnetcore)
 * [Web app that calls web APIs](/azure/active-directory/develop/scenario-web-app-call-api-overview)
 * [Protected web API](/azure/active-directory/develop/scenario-protected-web-api-overview)

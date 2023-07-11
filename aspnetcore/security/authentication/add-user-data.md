@@ -5,7 +5,6 @@ description: Learn how to add custom user data to Identity in an ASP.NET Core pr
 ms.author: riande
 ms.date: 03/15/2022
 ms.custom: "mvc, seodec18"
-no-loc: [".NET MAUI", "Mac Catalyst", "Blazor Hybrid", Home, Privacy, Kestrel, appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: security/authentication/add-user-data
 ---
 # Add, download, and delete custom user data to Identity in an ASP.NET Core project
@@ -127,7 +126,7 @@ Update the `Areas/Identity/Pages/Account/Manage/Index.cshtml` with the following
 
 Update the `InputModel` in `Areas/Identity/Pages/Account/Register.cshtml.cs` with the following highlighted code:
 
-[!code-csharp[](add-user-data/samples/6.x/SampleApp/Areas/Identity/Pages/Account/Register.cshtml.cs?name=snippet&highlight=39-47)]
+[!code-csharp[](add-user-data/samples/6.x/SampleApp/Areas/Identity/Pages/Account/Register.cshtml.cs?name=snippet&highlight=39-47,81-82)]
 
 Update the `Areas/Identity/Pages/Account/Register.cshtml` with the following highlighted markup:
 

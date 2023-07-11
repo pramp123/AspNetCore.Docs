@@ -5,7 +5,6 @@ description: Learn how to use ASP.NET Core APIs in a class library.
 ms.author: scaddie
 ms.custom: mvc
 ms.date: 12/16/2019
-no-loc: [".NET MAUI", "Mac Catalyst", "Blazor Hybrid", Home, Privacy, Kestrel, appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: fundamentals/target-aspnetcore
 ---
 # Use ASP.NET Core APIs in a class library
@@ -191,7 +190,7 @@ If the project targets .NET Core 3.x, it requires:
 * An `AddRazorSupportForMvc` MSBuild property set to `true`.
 * A `<FrameworkReference>` element for the shared framework.
 
-The **Razor Class Library** project template satisfies the preceding requirements for projects targeting .NET Core 3.x. Use the following instructions for your editor.
+The **Razor Class Library** project template satisfies the preceding requirements for projects targeting .NET Core. Use the following instructions for your editor.
 
 # [Visual Studio](#tab/visual-studio)
 
