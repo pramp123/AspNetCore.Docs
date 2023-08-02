@@ -6,7 +6,6 @@ monikerRange: '>= aspnetcore-5.0'
 ms.author: riande
 ms.custom: mvc
 ms.date: 4/4/2022
-no-loc: [".NET MAUI", "Mac Catalyst", "Blazor Hybrid", Home, Privacy, Kestrel, appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: host-and-deploy/iis/in-process-hosting
 ---
 # In-process hosting with IIS and ASP.NET Core
@@ -86,6 +85,16 @@ The following characteristics apply when hosting in-process:
 [!code-csharp[](~/host-and-deploy/iis/in-process-hosting/6.0samples/Program.cs?highlight=22-23)]
   
 * [Web Package (single-file) deployments](/aspnet/web-forms/overview/deployment/web-deployment-in-the-enterprise/deploying-web-packages) aren't supported.
+
+:::moniker-end
+
+:::moniker range=">= aspnetcore-8.0"
+
+<a name="ihsrtf8"></a>
+
+## Get timing information
+
+See [Get detailed timing information with IHttpSysRequestTimingFeature](xref:fundamentals/servers/httpsys?view=aspnetcore-8.0&preserve-view=true#ihsrtf8).
 
 :::moniker-end
 

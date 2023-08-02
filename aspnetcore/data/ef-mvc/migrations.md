@@ -1,12 +1,11 @@
 ---
 title: Tutorial Part 5, apply migrations to the Contoso University sample
 description: Part 5 of the Contoso University tutorial series. Use the EF Core migrations feature for managing data model changes in an ASP.NET Core MVC app.
-author: rick-anderson
+author: tdykstra
 ms.author: riande
 ms.custom: contperf-fy21q2
 ms.date: 11/13/2020
 ms.topic: tutorial
-no-loc: [".NET MAUI", "Mac Catalyst", "Blazor Hybrid", Home, Privacy, Kestrel, appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: data/ef-mvc/migrations
 ---
 
@@ -43,6 +42,8 @@ Install EF Core tools as a [global tool](/ef/core/miscellaneous/cli/dotnet) and 
  dotnet tool install --global dotnet-ef
  dotnet ef database drop
  ```
+
+[!INCLUDE[](~/includes/dotnet-tool-install-arch-options.md)]
 
 The following section explains how to run CLI commands.
 

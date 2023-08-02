@@ -6,7 +6,6 @@ monikerRange: '>= aspnetcore-3.1'
 ms.author: scaddie
 ms.custom: mvc
 ms.date: 11/09/2021
-no-loc: [".NET MAUI", "Mac Catalyst", "Blazor Hybrid", Home, Privacy, Kestrel, appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: tutorials/get-started-with-swashbuckle
 ---
 # Get started with Swashbuckle and ASP.NET Core
@@ -74,6 +73,8 @@ dotnet add TodoApi.csproj package Swashbuckle.AspNetCore -v 6.2.3
 Add the Swagger generator to the services collection in `Program.cs`:
 
 :::code language="csharp" source="web-api-help-pages-using-swagger/samples/6.x/SwashbuckleSample/Snippets/Program.cs" id="snippet_ServicesDefault" highlight="4":::
+
+The call to <xref:Microsoft.Extensions.DependencyInjection.EndpointMetadataApiExplorerServiceCollectionExtensions.AddEndpointsApiExplorer%2A> shown in the preceding example is required only for [minimal APIs](/aspnet/core/fundamentals/minimal-apis/overview). For more information, see [this StackOverflow post](https://stackoverflow.com/a/71933535).
 
 Enable the middleware for serving the generated JSON document and the Swagger UI, also in `Program.cs`:
 
@@ -259,7 +260,7 @@ To inject additional CSS stylesheets, add them to the project's *wwwroot* folder
 
 * [View or download sample code](https://github.com/dotnet/AspNetCore.Docs/tree/main/aspnetcore/tutorials/web-api-help-pages-using-swagger/samples/) ([how to download](xref:index#how-to-download-a-sample))
 * [Swagger doesn't recognize comments or attributes on records](https://github.com/domaindrivendev/Swashbuckle.AspNetCore/issues/1920)
-* [Microsoft Learn: Improve the developer experience of an API with Swagger documentation](/learn/modules/improve-api-developer-experience-with-swagger/)
+* [Improve the developer experience of an API with Swagger documentation](/training/modules/improve-api-developer-experience-with-swagger/)
 
 :::moniker-end
 
@@ -582,6 +583,6 @@ app.UseSwaggerUI(c =>
 
 ## Additional resources
 
-* [Microsoft Learn: Improve the developer experience of an API with Swagger documentation](/learn/modules/improve-api-developer-experience-with-swagger/)
+* [Improve the developer experience of an API with Swagger documentation](/training/modules/improve-api-developer-experience-with-swagger/)
 
 :::moniker-end

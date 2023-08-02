@@ -1,12 +1,11 @@
 ---
 title: Use hosting startup assemblies in ASP.NET Core
-author: rick-anderson
+author: tdykstra
 description: Discover how to enhance an ASP.NET Core app from an external assembly using an IHostingStartup implementation.
 monikerRange: '>= aspnetcore-2.1'
 ms.author: riande
 ms.custom: "mvc, seodec18"
 ms.date: 09/26/2019
-no-loc: [".NET MAUI", "Mac Catalyst", "Blazor Hybrid", Home, Privacy, Kestrel, appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: fundamentals/configuration/platform-specific-configuration
 ---
 # Use hosting startup assemblies in ASP.NET Core

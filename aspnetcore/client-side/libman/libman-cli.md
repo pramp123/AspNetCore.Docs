@@ -5,7 +5,6 @@ description: Learn how to use the LibMan CLI in an ASP.NET Core project.
 ms.author: scaddie
 ms.custom: mvc
 ms.date: 11/12/2019
-no-loc: [".NET MAUI", "Mac Catalyst", "Blazor Hybrid", Home, Privacy, Kestrel, appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: client-side/libman/libman-cli
 ---
 # Use the LibMan CLI with ASP.NET Core
@@ -25,6 +24,8 @@ To install the LibMan CLI:
 ```dotnetcli
 dotnet tool install -g Microsoft.Web.LibraryManager.Cli
 ```
+
+[!INCLUDE[](~/includes/dotnet-tool-install-arch-options.md)]
 
 A [.NET Core Global Tool](/dotnet/core/tools/global-tools#install-a-global-tool) is installed from the [Microsoft.Web.LibraryManager.Cli](https://www.nuget.org/packages/Microsoft.Web.LibraryManager.Cli/) NuGet package.
 

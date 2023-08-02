@@ -1,17 +1,21 @@
 ---
-title: Troubleshoot gRPC on .NET Core
+title: Troubleshoot gRPC on .NET
 author: jamesnk
-description: Troubleshoot errors when using gRPC on .NET Core.
+description: Troubleshoot errors when using gRPC on .NET.
 monikerRange: '>= aspnetcore-3.0'
 ms.author: jamesnk
 ms.custom: mvc
-ms.date: 07/09/2020
-no-loc: [".NET MAUI", "Mac Catalyst", "Blazor Hybrid", Home, Privacy, Kestrel, appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
+ms.date: 04/26/2023
 uid: grpc/troubleshoot
 ---
-# Troubleshoot gRPC on .NET Core
+
+# Troubleshoot gRPC on .NET
 
 By [James Newton-King](https://twitter.com/jamesnk)
+
+[!INCLUDE[](~/includes/not-latest-version.md)]
+
+:::moniker range="= aspnetcore-8.0"
 
 This document discusses commonly encountered problems when developing gRPC apps on .NET.
 
@@ -21,7 +25,7 @@ The gRPC template and samples use [Transport Layer Security (TLS)](https://tools
 
 You can verify the ASP.NET Core gRPC service is using TLS in the logs written on app start. The service will be listening on an HTTPS endpoint:
 
-```
+```text
 info: Microsoft.Hosting.Lifetime[0]
       Now listening on: https://localhost:5001
 info: Microsoft.Hosting.Lifetime[0]
@@ -55,14 +59,31 @@ You may see this error if you are testing your app locally and the ASP.NET Core 
 If you are calling a gRPC service on another machine and are unable to trust the certificate then the gRPC client can be configured to ignore the invalid certificate. The following code uses <xref:System.Net.Http.HttpClientHandler.ServerCertificateCustomValidationCallback%2A?displayProperty=nameWithType> to allow calls without a trusted certificate:
 
 ```csharp
-var httpHandler = new HttpClientHandler();
-// Return `true` to allow certificates that are untrusted/invalid
-httpHandler.ServerCertificateCustomValidationCallback = 
+var handler = new HttpClientHandler();
+handler.ServerCertificateCustomValidationCallback = 
     HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
 
 var channel = GrpcChannel.ForAddress("https://localhost:5001",
-    new GrpcChannelOptions { HttpHandler = httpHandler });
+    new GrpcChannelOptions { HttpHandler = handler });
 var client = new Greet.GreeterClient(channel);
+```
+
+The [gRPC client factory](xref:grpc/clientfactory) allows calls without a trusted certificate. Use the <xref:Microsoft.Extensions.DependencyInjection.HttpClientBuilderExtensions.ConfigurePrimaryHttpMessageHandler%2A> extension method to configure the handler on the client:
+
+```csharp
+builder.Services
+    .AddGrpcClient<Greeter.GreeterClient>(o =>
+    {
+        o.Address = new Uri("https://localhost:5001");
+    })
+    .ConfigurePrimaryHttpMessageHandler(() =>
+    {
+        var handler = new HttpClientHandler();
+        handler.ServerCertificateCustomValidationCallback = 
+            HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+
+        return handler;
+    });
 ```
 
 > [!WARNING]
@@ -76,6 +97,7 @@ There are some additional requirements to call insecure gRPC services depending 
 
 * .NET 5 or later requires [Grpc.Net.Client](https://www.nuget.org/packages/Grpc.Net.Client) version 2.32.0 or later.
 * .NET Core 3.x requires additional configuration. The app must set the `System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport` switch to `true`:
+
     ```csharp
     // This switch must be set before creating the GrpcChannel/HttpClient.
     AppContext.SetSwitch(
@@ -93,36 +115,28 @@ The `System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport` switch is only 
 
 ## Unable to start ASP.NET Core gRPC app on macOS
 
-Kestrel doesn't support HTTP/2 with TLS on macOS and older Windows versions such as Windows 7. The ASP.NET Core gRPC template and samples use TLS by default. You'll see the following error message when you attempt to start the gRPC server:
+Kestrel doesn't support HTTP/2 with TLS on macOS before .NET 8. The ASP.NET Core gRPC template and samples use TLS by default. You'll see the following error message when you attempt to start the gRPC server:
 
 > Unable to bind to https://localhost:5001 on the IPv4 loopback interface: 'HTTP/2 over TLS is not supported on macOS due to missing ALPN support.'.
 
-To work around this issue, configure Kestrel and the gRPC client to use HTTP/2 *without* TLS. You should only do this during development. Not using TLS will result in gRPC messages being sent without encryption.
+To work around this issue in .NET 7 and earlier, configure Kestrel and the gRPC client to use HTTP/2 *without* TLS. You should only do this during development. Not using TLS will result in gRPC messages being sent without encryption.
 
 Kestrel must configure an HTTP/2 endpoint without TLS in `Program.cs`:
 
 ```csharp
-public static IHostBuilder CreateHostBuilder(string[] args) =>
-    Host.CreateDefaultBuilder(args)
-        .ConfigureWebHostDefaults(webBuilder =>
-        {
-            webBuilder.ConfigureKestrel(options =>
-            {
-                // Setup a HTTP/2 endpoint without TLS.
-                options.ListenLocalhost(5000, o => o.Protocols = 
-                    HttpProtocols.Http2);
-            });
-            webBuilder.UseStartup<Startup>();
-        });
+var builder = WebApplication.CreateBuilder(args);
+
+builder.WebHost.ConfigureKestrel(options =>
+{
+    // Setup a HTTP/2 endpoint without TLS.
+    options.ListenLocalhost(<5287>, o => o.Protocols =
+        HttpProtocols.Http2);
+});
 ```
 
-:::moniker range=">= aspnetcore-5.0"
-When an HTTP/2 endpoint is configured without TLS, the endpoint's [ListenOptions.Protocols](xref:fundamentals/servers/kestrel/endpoints#listenoptionsprotocols) must be set to `HttpProtocols.Http2`. `HttpProtocols.Http1AndHttp2` can't be used because TLS is required to negotiate HTTP/2. Without TLS, all connections to the endpoint default to HTTP/1.1, and gRPC calls fail.
-:::moniker-end
+* In the preceding code, replace the localhost port number `5287` with the `HTTP` (not `HTTPS`) port number specified in `Properties/launchSettings.json` within the gRPC service project.
 
-:::moniker range="< aspnetcore-5.0"
-When an HTTP/2 endpoint is configured without TLS, the endpoint's [ListenOptions.Protocols](xref:fundamentals/servers/kestrel#listenoptionsprotocols) must be set to `HttpProtocols.Http2`. `HttpProtocols.Http1AndHttp2` can't be used because TLS is required to negotiate HTTP/2. Without TLS, all connections to the endpoint default to HTTP/1.1, and gRPC calls fail.
-:::moniker-end
+When an HTTP/2 endpoint is configured without TLS, the endpoint's [ListenOptions.Protocols](xref:fundamentals/servers/kestrel/endpoints#listenoptionsprotocols) must be set to `HttpProtocols.Http2`. `HttpProtocols.Http1AndHttp2` can't be used because TLS is required to negotiate HTTP/2. Without TLS, all connections to the endpoint default to HTTP/1.1, and gRPC calls fail.
 
 The gRPC client must also be configured to not use TLS. For more information, see [Call insecure gRPC services with .NET Core client](#call-insecure-grpc-services-with-net-core-client).
 
@@ -174,6 +188,9 @@ You can workaround this issue by:
 The WPF application can use the gRPC generated types from the new class library project.
 
 ## Calling gRPC services hosted in a sub-directory
+
+> [!WARNING]
+> Many third-party gRPC tools don't support services hosted in subdirectories. Consider finding a way to host gRPC as the root directory.
 
 The path component of a gRPC channel's address is ignored when making gRPC calls. For example, `GrpcChannel.ForAddress("https://localhost:5001/ignored_path")` won't use `ignored_path` when routing gRPC calls for the service.
 
@@ -228,23 +245,11 @@ The preceding code:
 
 Alternatively, a client factory can be configured with `SubdirectoryHandler` by using <xref:Microsoft.Extensions.DependencyInjection.HttpClientBuilderExtensions.AddHttpMessageHandler%2A>.
 
-:::moniker range=">= aspnetcore-6.0"
-
 ## Configure gRPC client to use HTTP/3
 
-The .NET gRPC client supports HTTP/3 with .NET 6 or later. If the server sends an `alt-svc` response header to the client that indicates the server supports HTTP/3, the client will automatically upgrade its connection to HTTP/3. For information about how to enable HTTP/3 on the server, see <xref:fundamentals/servers/kestrel/http3>.
+The .NET gRPC client supports HTTP/3 with .NET 6 or later. If the server sends an `alt-svc` response header to the client that indicates the server supports HTTP/3, the client will automatically upgrade its connection to HTTP/3. The Kestrel server supports HTTP/3 by default. For more information, see <xref:fundamentals/servers/kestrel/http3>.
 
-HTTP/3 support is in preview in .NET 6, and needs to be enabled via a configuration flag in the project file:
-
-```xml
-<ItemGroup>
-  <RuntimeHostConfigurationOption Include="System.Net.SocketsHttpHandler.Http3Support" Value="true" />
-</ItemGroup>
-```
-
-`System.Net.SocketsHttpHandler.Http3Support` can also be set using [AppContext.SetSwitch](xref:System.AppContext.SetSwitch%2A).
-
-A <xref:System.Net.Http.DelegatingHandler> can bee used to force a gRPC client to use HTTP/3. Forcing HTTP/3 avoids the overhead of upgrading the request. Force HTTP/3 with code similar to the following:
+A <xref:System.Net.Http.DelegatingHandler> can be used to force a gRPC client to use HTTP/3. Forcing HTTP/3 avoids the overhead of upgrading the request. Force HTTP/3 with code similar to the following:
 
 ```csharp
 /// <summary>
@@ -279,6 +284,51 @@ var reply = await client.SayHelloAsync(new HelloRequest { Name = ".NET" });
 
 Alternatively, a client factory can be configured with `Http3Handler` by using <xref:Microsoft.Extensions.DependencyInjection.HttpClientBuilderExtensions.AddHttpMessageHandler%2A>.
 
+## Building gRPC on Alpine Linux
+
+The `Grpc.Tools` package [generates .NET types from `.proto` files](xref:grpc/basics#generated-c-assets) using a bundled native binary called `protoc`. Additional steps are required to build gRPC apps on platforms that aren't supported by the native binaries in `Grpc.Tools`, such as Alpine Linux.
+
+### Generate code ahead of time
+
+One solution is to generate code ahead of time.
+
+1. Move `.proto` files and the `Grpc.Tools` package reference to a new project.
+1. Publish the project as a NuGet package and upload it to a NuGet feed.
+1. Update the app to reference the NuGet package.
+
+With the preceding steps, the app no longer requires `Grpc.Tools` to build because code is generated ahead of time.
+
+### Customize `Grpc.Tools` native binaries
+
+`Grpc.Tools` supports using custom native binaries. This feature allows gRPC tooling to run in environments its bundled native binaries don't support.
+
+Build or acquire `protoc` and `grpc_csharp_plugin` native binaries and configure `Grpc.Tools` to use them. Configure native binaries by setting the following environment variables:
+
+* `PROTOBUF_PROTOC` - Full path to the protocol buffers compiler
+* `GRPC_PROTOC_PLUGIN` - Full path to the grpc_csharp_plugin
+
+For Alpine Linux, there are community-provided packages for the protocol buffers compiler and gRPC plugins at [https://pkgs.alpinelinux.org/](https://pkgs.alpinelinux.org/packages?name=grpc-plugins).
+
+```sh
+# Build or install the binaries for your architecture.
+
+# e.g. for Alpine Linux the grpc-plugins package can be used
+#  See https://pkgs.alpinelinux.org/package/edge/community/x86_64/grpc-plugins
+apk add grpc-plugins  # Alpine Linux specific package installer
+
+# Set environment variables for the built/installed protoc
+# and grpc_csharp_plugin binaries
+export PROTOBUF_PROTOC=/usr/bin/protoc
+export GRPC_PROTOC_PLUGIN=/usr/bin/grpc_csharp_plugin
+
+# When dotnet build runs, the Grpc.Tools NuGet package
+# uses the binaries pointed to by the environment variables.
+dotnet build
+```
+
+For more information about using `Grpc.Tools` with unsupported architectures, see the [gRPC build integration documentation](https://github.com/grpc/grpc/blob/master/src/csharp/BUILD-INTEGRATION.md#using-grpctools-with-unsupported-architectures).
+
 :::moniker-end
 
-[!INCLUDE[](~/includes/gRPCazure.md)]
+[!INCLUDE[](~/grpc/troubleshoot/includes/troubleshoot3-7.md)]
+

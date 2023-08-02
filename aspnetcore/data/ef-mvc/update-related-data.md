@@ -1,12 +1,11 @@
 ---
 title: "Tutorial: Update related data - ASP.NET MVC with EF Core"
-description: "In this tutorial you'll update related data by updating foreign key fields and navigation properties."
-author: rick-anderson
+description: In this tutorial you update related data by updating foreign key fields and navigation properties.
+author: tdykstra
 ms.author: riande
 ms.custom: mvc
 ms.date: 03/27/2019
 ms.topic: tutorial
-no-loc: [".NET MAUI", "Mac Catalyst", "Blazor Hybrid", Home, Privacy, Kestrel, appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: data/ef-mvc/update-related-data
 ---
 

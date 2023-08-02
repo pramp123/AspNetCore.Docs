@@ -3,10 +3,9 @@ title: Make HTTP requests using IHttpClientFactory in ASP.NET Core
 author: stevejgordon
 description: Learn about using the IHttpClientFactory interface to manage logical HttpClient instances in ASP.NET Core.
 monikerRange: '>= aspnetcore-2.1'
-ms.author: scaddie
+ms.author: tdykstra
 ms.custom: mvc
 ms.date: 11/09/2021
-no-loc: [".NET MAUI", "Mac Catalyst", "Blazor Hybrid", Home, Privacy, Kestrel, appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: fundamentals/http-requests
 ---
 # Make HTTP requests using IHttpClientFactory in ASP.NET Core
@@ -277,7 +276,7 @@ An approach to managing regularly used policies is to define them once and regis
 
 In the preceding code:
 
-* Two policies, `Regular` and `Short`, are added to the Polly registry.
+* Two policies, `Regular` and `Long`, are added to the Polly registry.
 * <xref:Microsoft.Extensions.DependencyInjection.PollyHttpClientBuilderExtensions.AddPolicyHandlerFromRegistry%2A> configures individual named clients to use these policies from the Polly registry.
 
 For more information on `IHttpClientFactory` and Polly integrations, see the [Polly wiki](https://github.com/App-vNext/Polly/wiki/Polly-and-HttpClientFactory).

@@ -5,7 +5,6 @@ description: Learn what Tag Helpers are and how to use them in ASP.NET Core.
 ms.author: riande
 ms.custom: H1Hack27Feb2017
 ms.date: 03/18/2019
-no-loc: [".NET MAUI", "Mac Catalyst", "Blazor Hybrid", Home, Privacy, Kestrel, appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: mvc/views/tag-helpers/intro
 ---
 # Tag Helpers in ASP.NET Core
@@ -153,11 +152,11 @@ The preceding code can be written as:
        disabled="@(Model?.LicenseId == null)" />
 ```
 
-Normally, the `@` operator inserts a textual representation of an expression into the rendered HTML markup. However, when an expression evaluates to logical `false`, the framework removes the attribute instead. In the preceding example, the `disabled` attribute is removed if `Model` or `LicenseId` is `null`.
+Normally, the `@` operator inserts a textual representation of an expression into the rendered HTML markup. However, when an expression evaluates to logical `false`, the framework removes the attribute instead. In the preceding example, the `disabled` attribute is set to `true` if either `Model` or `LicenseId` is `null`.
 
 ## Tag helper initializers
 
-While attributes can be used to configure individual instances of tag helpers, <xref:Microsoft.AspNetCore.Mvc.Razor.ITagHelperInitializer%601> can be used to configure all tag helper instances of a specific kind. Consider the following example of a tag helper initializer that configures the `asp-append-version` attribute or `AppendVersion` property for all `ScriptTagHelper`s in the app:
+While attributes can be used to configure individual instances of tag helpers, <xref:Microsoft.AspNetCore.Mvc.Razor.ITagHelperInitializer%601> can be used to configure all tag helper instances of a specific kind. Consider the following example of a tag helper initializer that configures the `asp-append-version` attribute or `AppendVersion` property for all instances of `ScriptTagHelper` in the app:
 
 ```csharp
 public class AppendVersionTagHelperInitializer : ITagHelperInitializer<ScriptTagHelper>
@@ -176,9 +175,11 @@ builder.Services.AddSingleton
     <ITagHelperInitializer<ScriptTagHelper>, AppendVersionTagHelperInitializer>();
 ```
 
-## IntelliSense support for Tag Helpers
+## Tag Helper automatic version generation outside of wwwroot
 
-When you create a new ASP.NET Core web app in Visual Studio, it adds the NuGet package "Microsoft.AspNetCore.Razor.Tools". This is the package that adds Tag Helper tooling.
+[!INCLUDE[](~/includes/th_version.md)]
+
+## IntelliSense support for Tag Helpers
 
 Consider writing an HTML `<label>` element. As soon as you enter `<l` in the Visual Studio editor, IntelliSense displays matching elements:
 
@@ -274,7 +275,7 @@ The Visual Studio editor helps you write **all** of the markup in the Tag Helper
 
 * ASP.NET Web Server Controls have a non-trivial lifecycle that can make developing and debugging difficult.
 
-* Web Server controls allow you to add functionality to the client Document Object Model (DOM) elements by using a client control. Tag Helpers have no DOM.
+* Web Server controls allow you to add functionality to the client DOM elements by using a client control. Tag Helpers have no DOM.
 
 * Web Server controls include automatic browser detection. Tag Helpers have no knowledge of the browser.
 

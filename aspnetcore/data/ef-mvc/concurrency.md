@@ -1,12 +1,11 @@
 ---
 title: "Tutorial: Handle concurrency - ASP.NET MVC with EF Core"
 description: "This tutorial shows how to handle conflicts when multiple users update the same entity at the same time."
-author: rick-anderson
+author: tdykstra
 ms.author: riande
 ms.custom: mvc
 ms.date: 03/27/2019
 ms.topic: tutorial
-no-loc: [".NET MAUI", "Mac Catalyst", "Blazor Hybrid", Home, Privacy, Kestrel, appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: data/ef-mvc/concurrency
 ---
 

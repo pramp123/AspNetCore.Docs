@@ -5,7 +5,6 @@ description: Learn how to author Tag Helpers in ASP.NET Core.
 ms.author: riande
 ms.custom: mvc
 ms.date: 12/05/2019
-no-loc: [".NET MAUI", "Mac Catalyst", "Blazor Hybrid", Home, Privacy, Kestrel, appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: mvc/views/tag-helpers/authoring
 ---
 # Author Tag Helpers in ASP.NET Core
@@ -117,6 +116,21 @@ That approach works for the attribute "href" as long as it doesn't currently exi
    > [!code-csharp[](../../../mvc/views/tag-helpers/authoring/sample/AuthoringTagHelpers/src/AuthoringTagHelpers/TagHelpers/EmailTagHelperMailVoid.cs?highlight=1&range=6-10)]
 
    With a self-closing email tag helper, the output would be `<a href="mailto:Rick@contoso.com" />`. Self-closing anchor tags are not valid HTML, so you wouldn't want to create one, but you might want to create a tag helper that's self-closing. Tag helpers set the type of the `TagMode` property after reading a tag.
+
+  You can also map a different attribute name to a property using the [`[HtmlAttributeName]` attribute](xref:Microsoft.AspNetCore.Razor.TagHelpers.HtmlAttributeNameAttribute).
+  
+  To map an attribute named `recipient` to the `MailTo` property:
+  
+  ```csharp
+  [HtmlAttributeName("recipient")]
+  public string? MailTo { get; set; }
+  ```
+  
+  Tag Helper for the `recipient` attribute:
+  
+  ```html
+  <email recipient="…"/>
+  ```
 
 ### ProcessAsync
 

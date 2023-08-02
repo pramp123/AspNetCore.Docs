@@ -1,12 +1,11 @@
 ---
 title: "Tutorial: Create a complex data model - ASP.NET MVC with EF Core"
 description: "In this tutorial, add more entities and relationships and customize the data model by specifying formatting, validation, and mapping rules."
-author: rick-anderson
+author: tdykstra
 ms.author: riande
 ms.custom: mvc
 ms.date: 03/27/2019
 ms.topic: tutorial
-no-loc: [".NET MAUI", "Mac Catalyst", "Blazor Hybrid", Home, Privacy, Kestrel, appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: data/ef-mvc/complex-data-model
 ---
 

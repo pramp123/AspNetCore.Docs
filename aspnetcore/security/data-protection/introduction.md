@@ -5,7 +5,6 @@ description: Learn about the concept of data protection and the design principle
 ms.author: riande
 ms.custom: mvc
 ms.date: 03/07/2022
-no-loc: [".NET MAUI", "Mac Catalyst", "Blazor Hybrid", Home, Privacy, Kestrel, appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: security/data-protection/introduction
 ---
 # ASP.NET Core Data Protection Overview
@@ -36,7 +35,7 @@ We started by identifying problems with the existing stack. Once we had that, we
 
 * Offer a simple consumer-facing API. The APIs should be easy to use correctly and difficult to use incorrectly.
 
-* Developers shouldn't learn key management principles. The system should handle algorithm selection and key lifetime on the developer's behalf. Ideally the developer should never even have access to the raw key material.
+* Developers shouldn't have to learn key management principles. The system should handle algorithm selection and key lifetime on the developer's behalf. Ideally the developer should never even have access to the raw key material.
 
 * Keys should be protected at rest when possible. The system should figure out an appropriate default protection mechanism and apply it automatically.
 

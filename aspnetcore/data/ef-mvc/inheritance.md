@@ -1,12 +1,11 @@
 ---
 title: "Tutorial: Implement inheritance - ASP.NET MVC with EF Core"
 description: "This tutorial will show you how to implement inheritance in the data model, using Entity Framework Core in an ASP.NET Core application."
-author: rick-anderson
+author: tdykstra
 ms.author: riande
 ms.custom: mvc
 ms.date: 03/27/2019
 ms.topic: tutorial
-no-loc: [".NET MAUI", "Mac Catalyst", "Blazor Hybrid", Home, Privacy, Kestrel, appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: data/ef-mvc/inheritance
 ---
 

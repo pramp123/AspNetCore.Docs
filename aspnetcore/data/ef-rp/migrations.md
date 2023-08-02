@@ -1,10 +1,9 @@
 ---
 title: Part 4, Razor Pages with EF Core in ASP.NET Core - Migrations
-author: rick-anderson
+author: tdykstra
 description: Part 4 of Razor Pages and Entity Framework tutorial series.
 ms.author: riande
 ms.date: 07/22/2019
-no-loc: [".NET MAUI", "Mac Catalyst", "Blazor Hybrid", Home, Privacy, Kestrel, appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: data/ef-rp/migrations
 ---
 
@@ -43,6 +42,8 @@ Drop-Database
   ```dotnetcli
   dotnet tool install --global dotnet-ef
   ```
+
+[!INCLUDE[](~/includes/dotnet-tool-install-arch-options.md)]
 
 * In the command prompt, navigate to the project folder. The project folder contains the `ContosoUniversity.csproj` file.
 
@@ -298,7 +299,7 @@ EF Core uses the `__MigrationsHistory` table to see if any migrations need to ru
 ## Troubleshooting
 
 Download the [completed app](
-https://github.com/dotnet/AspNetCore.Docs/tree/main/aspnetcore/data/ef-rp/intro/samples/cu21snapshots/part-4-migrations).
+https://github.com/dotnet/AspNetCore.Docs/tree/main/aspnetcore/data/ef-rp/intro/samples/cu21snapshots/Part-4-Migrations).
 
 The app generates the following exception:
 

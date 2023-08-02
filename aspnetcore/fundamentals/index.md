@@ -1,12 +1,11 @@
 ---
 title: ASP.NET Core fundamentals overview
-author: rick-anderson
+author: tdykstra
 description: Learn the fundamental concepts for building ASP.NET Core apps, including dependency injection (DI), configuration, middleware, and more.
 monikerRange: '>= aspnetcore-3.1'
 ms.author: riande
 ms.custom: mvc
 ms.date: 03/09/2022
-no-loc: [".NET MAUI", "Mac Catalyst", "Blazor Hybrid", Home, Privacy, Kestrel, appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: fundamentals/index
 ---
 # ASP.NET Core fundamentals overview
@@ -69,15 +68,15 @@ On startup, an ASP.NET Core app builds a *host*. The host encapsulates all of th
 * Dependency injection (DI) services
 * Configuration
 
-There are three different hosts:
+There are three different hosts capable of running an ASP.NET Core app:
 
-* .NET WebApplication Host
-* .NET Generic Host
-* ASP.NET Core Web Host
+* [ASP.NET Core WebApplication](xref:fundamentals/minimal-apis/webapplication), also known as the [Minimal Host](xref:migration/50-to-60#new-hosting-model)
+* [.NET Generic Host](xref:fundamentals/host/generic-host) combined with ASP.NET Core's <xref:Microsoft.Extensions.Hosting.GenericHostBuilderExtensions.ConfigureWebHostDefaults%2A>
+* [ASP.NET Core WebHost](xref:fundamentals/host/web-host)
 
-The .NET Minimal Host is recommended and used in all the ASP.NET Core templates. The Minimal and Generic hosts share many of the same interfaces and classes. The ASP.NET Core Web Host is available only for backwards compatibility.
+The ASP.NET Core <xref:Microsoft.AspNetCore.Builder.WebApplication> and <xref:Microsoft.AspNetCore.Builder.WebApplicationBuilder> types are recommended and used in all the ASP.NET Core templates. `WebApplication` behaves similarly to the .NET Generic Host and exposes many of the same interfaces but requires less callbacks to configure. The ASP.NET Core <xref:Microsoft.AspNetCore.WebHost> is available only for backward compatibility.
 
-The following example instantiates a WebApplication  Host:
+The following example instantiates a `WebApplication`:
 
 [!code-csharp[](~/fundamentals/startup/6.0_samples/WebAll/Program.cs?name=snippet2&highlight=7)]
 

@@ -5,7 +5,6 @@ description: Learn how to create gRPC clients using the client factory.
 monikerRange: '>= aspnetcore-3.0'
 ms.author: jamesnk
 ms.date: 02/25/2022
-no-loc: [".NET MAUI", "Mac Catalyst", "Blazor Hybrid", Home, Privacy, Kestrel, appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: grpc/clientfactory
 ---
 # gRPC client factory integration in .NET
@@ -96,7 +95,7 @@ The preceding code:
 * Registers the `GreeterClient` type.
 * Configures a `LoggingInterceptor` for this client. `LoggingInterceptor` is created once and shared between `GreeterClient` instances.
 
-By default, an interceptor is created once and shared between clients. This behavior can be overriden by specifying a scope when registering an intercepter. The client factory can be configured to create a new interceptor for each client by specifying `InterceptorScope.Client`.
+By default, an interceptor is created once and shared between clients. This behavior can be overridden by specifying a scope when registering an interceptor. The client factory can be configured to create a new interceptor for each client by specifying `InterceptorScope.Client`.
 
 ```csharp
 builder.Services
@@ -134,7 +133,29 @@ builder.Services
 > * `HttpHandler` is set to the result from <xref:Microsoft.Extensions.DependencyInjection.HttpClientBuilderExtensions.ConfigurePrimaryHttpMessageHandler%2A>.
 > * `LoggerFactory` is set to the <xref:Microsoft.Extensions.Logging.ILoggerFactory> resolved from DI.
 > 
-> These values can be overriden by `ConfigureChannel`.
+> These values can be overridden by `ConfigureChannel`.
+
+## Call credentials
+
+An authentication header can be added to gRPC calls using the `AddCallCredentials` method:
+
+```csharp
+builder.Services
+    .AddGrpcClient<Greeter.GreeterClient>(o =>
+    {
+        o.Address = new Uri("https://localhost:5001");
+    })
+    .AddCallCredentials((context, metadata) =>
+    {
+        if (!string.IsNullOrEmpty(_token))
+        {
+            metadata.Add("Authorization", $"Bearer {_token}");
+        }
+        return Task.CompletedTask;
+    });
+```
+
+For more information about configuring call credentials, see [Bearer token with gRPC client factory](xref:grpc/authn-and-authz#bearer-token-with-grpc-client-factory).
 
 ## Deadline and cancellation propagation
 
@@ -297,7 +318,7 @@ The preceding code:
 * Registers the `GreeterClient` type.
 * Configures a `LoggingInterceptor` for this client. `LoggingInterceptor` is created once and shared between `GreeterClient` instances.
 
-By default, an interceptor is created once and shared between clients. This behavior can be overriden by specifying a scope when registering an intercepter. The client factory can be configured to create a new interceptor for each client by specifying `InterceptorScope.Client`.
+By default, an interceptor is created once and shared between clients. This behavior can be overridden by specifying a scope when registering an interceptor. The client factory can be configured to create a new interceptor for each client by specifying `InterceptorScope.Client`.
 
 ```csharp
 services
@@ -335,7 +356,7 @@ services
 > * `HttpHandler` is set to the result from <xref:Microsoft.Extensions.DependencyInjection.HttpClientBuilderExtensions.ConfigurePrimaryHttpMessageHandler%2A>.
 > * `LoggerFactory` is set to the <xref:Microsoft.Extensions.Logging.ILoggerFactory> resolved from DI.
 > 
-> These values can be overriden by `ConfigureChannel`.
+> These values can be overridden by `ConfigureChannel`.
 
 ## Deadline and cancellation propagation
 

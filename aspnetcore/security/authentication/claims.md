@@ -6,7 +6,6 @@ monikerRange: '>= aspnetcore-3.1'
 ms.author: riande
 ms.custom: mvc
 ms.date: 2/16/2022
-no-loc: [".NET MAUI", "Mac Catalyst", "Blazor Hybrid", Home, Privacy, Kestrel, appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: security/authentication/claims
 ---
 # Mapping, customizing, and transforming claims in ASP.NET Core
@@ -29,7 +28,7 @@ The profile claims can be returned in the `id_token`, which is returned after a 
 
 [!code-csharp[](~/security/authentication/claims/sample6/WebRPmapClaims/Program.cs?name=snippet1&highlight=8-26)]
 
-The preceding code requires the [Microsoft.AspNetCore.Authentication.OpenIdConnect](https://www.nuget.org/packages/Microsoft.AspNetCore.Authentication.OpenIdConnect) NuGet package .
+The preceding code requires the [Microsoft.AspNetCore.Authentication.OpenIdConnect](https://www.nuget.org/packages/Microsoft.AspNetCore.Authentication.OpenIdConnect) NuGet package.
 
 Another way to get the user claims is to use the OpenID Connect User Info API. The ASP.NET Core client app uses the `GetClaimsFromUserInfoEndpoint` property to configure this. One important difference from the first settings, is that you must specify the claims you require using the `MapUniqueJsonKey` method, otherwise only the `name`, `given_name` and `email` standard claims will be available in the client app. The claims included in the `id_token` are mapped per default. This is the major difference to the first option. You must explicitly define some of the claims you require.
 
@@ -61,11 +60,13 @@ The <xref:Microsoft.AspNetCore.Authentication.IClaimsTransformation> interface a
 builder.Services.AddTransient<IClaimsTransformation, MyClaimsTransformation>();
 ```
 
+<!-- see https://github.com/dotnet/AspNetCore.Docs/issues/26032
 ## Extend or add custom claims in ASP.NET Core Identity
 
 Refer to the following document:
 
 [Add claims to Identity using IUserClaimsPrincipalFactory](xref:security/authentication/add-user-data#add-claims-to-identity-using-iuserclaimsprincipalfactoryapplicationuser)
+-->
 
 ## Map claims from external identity providers
 

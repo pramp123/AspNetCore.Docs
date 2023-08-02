@@ -1,15 +1,16 @@
 ---
 title: Dynamically-rendered ASP.NET Core Razor components
-author: daveabrock
+author: guardrex
 description: Learn how to use dynamically-rendered Razor components in Blazor apps.
 monikerRange: '>= aspnetcore-6.0'
 ms.author: riande
 ms.custom: mvc
-ms.date: 11/09/2021
-no-loc: [".NET MAUI", "Mac Catalyst", "Blazor Hybrid", Home, Privacy, Kestrel, appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
+ms.date: 11/08/2022
 uid: blazor/components/dynamiccomponent
 ---
 # Dynamically-rendered ASP.NET Core Razor components
+
+[!INCLUDE[](~/includes/not-latest-version.md)]
 
 By [Dave Brock](https://twitter.com/daveabrock)
 
@@ -66,30 +67,58 @@ In the following example, a Razor component renders a component based on the use
 | ULA&reg;                           | `Shared/UnitedLaunchAlliance.razor` |
 | Virgin Galactic&reg;               | `Shared/VirginGalactic.razor`       |
 
+:::moniker range=">= aspnetcore-7.0"
+
 `Shared/RocketLab.razor`:
 
-[!code-razor[](~/blazor/samples/6.0/BlazorSample_WebAssembly/Shared/dynamiccomponent/RocketLab.razor)]
+:::code language="razor" source="~/../blazor-samples/7.0/BlazorSample_WebAssembly/Shared/dynamiccomponent/RocketLab.razor":::
 
 `Shared/SpaceX.razor`:
 
-[!code-razor[](~/blazor/samples/6.0/BlazorSample_WebAssembly/Shared/dynamiccomponent/SpaceX.razor)]
+:::code language="razor" source="~/../blazor-samples/7.0/BlazorSample_WebAssembly/Shared/dynamiccomponent/SpaceX.razor":::
 
 `Shared/UnitedLaunchAlliance.razor`:
 
-[!code-razor[](~/blazor/samples/6.0/BlazorSample_WebAssembly/Shared/dynamiccomponent/UnitedLaunchAlliance.razor)]
+:::code language="razor" source="~/../blazor-samples/7.0/BlazorSample_WebAssembly/Shared/dynamiccomponent/UnitedLaunchAlliance.razor":::
 
 `Shared/VirginGalactic.razor`:
 
-[!code-razor[](~/blazor/samples/6.0/BlazorSample_WebAssembly/Shared/dynamiccomponent/VirginGalactic.razor)]
+:::code language="razor" source="~/../blazor-samples/7.0/BlazorSample_WebAssembly/Shared/dynamiccomponent/VirginGalactic.razor":::
 
 `Pages/DynamicComponentExample1.razor`:
 
-[!code-razor[](~/blazor/samples/6.0/BlazorSample_WebAssembly/Pages/dynamiccomponent/DynamicComponentExample1.razor)]
+:::code language="razor" source="~/../blazor-samples/7.0/BlazorSample_WebAssembly/Pages/dynamiccomponent/DynamicComponentExample1.razor":::
+
+:::moniker-end
+
+:::moniker range="< aspnetcore-7.0"
+
+`Shared/RocketLab.razor`:
+
+:::code language="razor" source="~/../blazor-samples/6.0/BlazorSample_WebAssembly/Shared/dynamiccomponent/RocketLab.razor":::
+
+`Shared/SpaceX.razor`:
+
+:::code language="razor" source="~/../blazor-samples/6.0/BlazorSample_WebAssembly/Shared/dynamiccomponent/SpaceX.razor":::
+
+`Shared/UnitedLaunchAlliance.razor`:
+
+:::code language="razor" source="~/../blazor-samples/6.0/BlazorSample_WebAssembly/Shared/dynamiccomponent/UnitedLaunchAlliance.razor":::
+
+`Shared/VirginGalactic.razor`:
+
+:::code language="razor" source="~/../blazor-samples/6.0/BlazorSample_WebAssembly/Shared/dynamiccomponent/VirginGalactic.razor":::
+
+`Pages/DynamicComponentExample1.razor`:
+
+:::code language="razor" source="~/../blazor-samples/6.0/BlazorSample_WebAssembly/Pages/dynamiccomponent/DynamicComponentExample1.razor":::
+
+:::moniker-end
 
 In the preceding example:
 
 * Component names are used as the option values using the [`nameof` operator](/dotnet/csharp/language-reference/operators/nameof), which returns component names as constant strings.
-* The `{APP NAMESPACE}` placeholder is the namespace of the app (for example, `BlazorSample`).
+* The namespace of the app is `BlazorSample`. ***Change the namespace to match your app's namespace.***
 
 ## Pass parameters
 
@@ -99,25 +128,38 @@ The following example configures a component metadata object (`ComponentMetadata
 
 `ComponentMetadata.cs`:
 
-```csharp
-public class ComponentMetadata
-{
-    public string? Name { get; set; }
-    public Dictionary<string, object> Parameters { get; set; } = 
-        new Dictionary<string, object>();
-}
-```
+:::moniker range=">= aspnetcore-7.0"
+
+:::code language="csharp" source="~/../blazor-samples/7.0/BlazorSample_Server/ComponentMetadata.cs":::
+
+:::moniker-end
+
+:::moniker range="< aspnetcore-7.0"
+
+:::code language="csharp" source="~/../blazor-samples/6.0/BlazorSample_Server/ComponentMetadata.cs":::
+
+:::moniker-end
 
 The following `RocketLabWithWindowSeat` component (`Shared/RocketLabWithWindowSeat.razor`) has been updated from the preceding example to include a component parameter named `WindowSeat` to specify if the passenger prefers a window seat on their flight:
 
 `Shared/RocketLabWithWindowSeat.razor`:
 
-[!code-razor[](~/blazor/samples/6.0/BlazorSample_WebAssembly/Shared/dynamiccomponent/RocketLabWithWindowSeat.razor?highlight=13-14)]
+:::moniker range=">= aspnetcore-7.0"
+
+:::code language="razor" source="~/../blazor-samples/7.0/BlazorSample_WebAssembly/Shared/dynamiccomponent/RocketLabWithWindowSeat.razor" highlight="13-14":::
+
+:::moniker-end
+
+:::moniker range="< aspnetcore-7.0"
+
+:::code language="razor" source="~/../blazor-samples/6.0/BlazorSample_WebAssembly/Shared/dynamiccomponent/RocketLabWithWindowSeat.razor" highlight="13-14":::
+
+:::moniker-end
 
 In the following example:
 
 * Only the `RocketLabWithWindowSeat` component's parameter for a window seat (`WindowSeat`) receives the value of the **`Window Seat`** checkbox.
-* The `{APP NAMESPACE}` placeholder is the namespace of the app (for example, `BlazorSample`).
+* The namespace of the app is `BlazorSample`. ***Change the namespace to match your app's namespace.***
 * The dynamically-rendered components are shared components in the app's `Shared` folder:
   * Shown in this article section: `RocketLabWithWindowSeat` (`Shared/RocketLabWithWindowSeat.razor`)
   * Components shown in the [Example](#example) section earlier in this article:
@@ -127,7 +169,117 @@ In the following example:
 
 `Pages/DynamicComponentExample2.razor`:
 
-[!code-razor[](~/blazor/samples/6.0/BlazorSample_WebAssembly/Pages/dynamiccomponent/DynamicComponentExample2.razor)]
+:::moniker range=">= aspnetcore-7.0"
+
+:::code language="razor" source="~/../blazor-samples/7.0/BlazorSample_WebAssembly/Pages/dynamiccomponent/DynamicComponentExample2.razor":::
+
+:::moniker-end
+
+:::moniker range="< aspnetcore-7.0"
+
+:::code language="razor" source="~/../blazor-samples/6.0/BlazorSample_WebAssembly/Pages/dynamiccomponent/DynamicComponentExample2.razor":::
+
+:::moniker-end
+
+## Event callbacks (`EventCallback`)
+
+Event callbacks (<xref:Microsoft.AspNetCore.Components.EventCallback>) can be passed to a <xref:Microsoft.AspNetCore.Components.DynamicComponent> in its parameter dictionary.
+
+`ComponentMetadata.cs`:
+
+:::moniker range=">= aspnetcore-7.0"
+
+:::code language="csharp" source="~/../blazor-samples/7.0/BlazorSample_Server/ComponentMetadata.cs":::
+
+:::moniker-end
+
+:::moniker range="< aspnetcore-7.0"
+
+:::code language="csharp" source="~/../blazor-samples/6.0/BlazorSample_Server/ComponentMetadata.cs":::
+
+:::moniker-end
+
+Implement an event callback parameter (<xref:Microsoft.AspNetCore.Components.EventCallback>) within each dynamically-rendered component.
+
+`Shared/RocketLab2.razor`:
+
+:::moniker range=">= aspnetcore-7.0"
+
+:::code language="razor" source="~/../blazor-samples/7.0/BlazorSample_Server/Shared/dynamiccomponent/RocketLab2.razor":::
+
+:::moniker-end
+
+:::moniker range="< aspnetcore-7.0"
+
+:::code language="razor" source="~/../blazor-samples/6.0/BlazorSample_Server/Shared/dynamiccomponent/RocketLab2.razor":::
+
+:::moniker-end
+
+`Shared/SpaceX2.razor`:
+
+:::moniker range=">= aspnetcore-7.0"
+
+:::code language="razor" source="~/../blazor-samples/7.0/BlazorSample_Server/Shared/dynamiccomponent/SpaceX2.razor":::
+
+:::moniker-end
+
+:::moniker range="< aspnetcore-7.0"
+
+:::code language="razor" source="~/../blazor-samples/6.0/BlazorSample_Server/Shared/dynamiccomponent/SpaceX2.razor":::
+
+:::moniker-end
+
+`Shared/UnitedLaunchAlliance2.razor`:
+
+:::moniker range=">= aspnetcore-7.0"
+
+:::code language="razor" source="~/../blazor-samples/7.0/BlazorSample_Server/Shared/dynamiccomponent/UnitedLaunchAlliance2.razor":::
+
+:::moniker-end
+
+:::moniker range="< aspnetcore-7.0"
+
+:::code language="razor" source="~/../blazor-samples/6.0/BlazorSample_Server/Shared/dynamiccomponent/UnitedLaunchAlliance2.razor":::
+
+:::moniker-end
+
+`Shared/VirginGalactic2.razor`:
+
+:::moniker range=">= aspnetcore-7.0"
+
+:::code language="razor" source="~/../blazor-samples/7.0/BlazorSample_Server/Shared/dynamiccomponent/VirginGalactic2.razor":::
+
+:::moniker-end
+
+:::moniker range="< aspnetcore-7.0"
+
+:::code language="razor" source="~/../blazor-samples/6.0/BlazorSample_Server/Shared/dynamiccomponent/VirginGalactic2.razor":::
+
+:::moniker-end
+
+In the following parent component example, the `ShowDTMessage` method assigns a string with the current time to `message`, and the value of `message` is rendered.
+
+The parent component passes the callback method, `ShowDTMessage` in the parameter dictionary:
+
+* The `string` key is the callback method's name, `OnClickCallback`.
+* The `object` value is created by <xref:Microsoft.AspNetCore.Components.EventCallbackFactory.Create%2A?displayProperty=nameWithType> for the parent callback method, `ShowDTMessage`. Note that the [`this` keyword](/dotnet/csharp/language-reference/keywords/this) isn't supported in C# fields, so a C# property is used for the parameter dictionary.
+
+> [!IMPORTANT]
+> For the following `DynamicComponentExample3` component, modify the code in the `OnDropdownChange` method. Change the namespace name of "`BlazorSample`" in the `Type.GetType()` argument to match your app's namespace.
+
+`Pages/DynamicComponentExample3.razor`:
+
+:::moniker range=">= aspnetcore-7.0"
+
+:::code language="razor" source="~/../blazor-samples/7.0/BlazorSample_Server/Pages/dynamiccomponent/DynamicComponentExample3.razor":::
+
+:::moniker-end
+
+:::moniker range="< aspnetcore-7.0"
+
+:::code language="razor" source="~/../blazor-samples/6.0/BlazorSample_Server/Pages/dynamiccomponent/DynamicComponentExample3.razor":::
+
+:::moniker-end
 
 ## Avoid catch-all parameters
 
@@ -136,3 +288,7 @@ Avoid the use of [catch-all parameters](xref:blazor/fundamentals/routing#catch-a
 ## Trademarks
 
 Rocket Lab is a registered trademark of [Rocket Lab USA Inc.](https://www.rocketlabusa.com/) SpaceX is a registered trademark of [Space Exploration Technologies Corp.](https://www.spacex.com/) United Launch Alliance and ULA are registered trademarks of [United Launch Alliance, LLC](https://www.ulalaunch.com/). Virgin Galactic is a registered trademark of [Galactic Enterprises, LLC](https://www.virgingalactic.com/).
+
+## Additional resources
+
+* <xref:blazor/components/event-handling#eventcallback>

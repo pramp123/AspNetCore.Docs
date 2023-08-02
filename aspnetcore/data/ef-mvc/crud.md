@@ -1,12 +1,11 @@
 ---
 title: "Tutorial: Implement CRUD Functionality - ASP.NET MVC with EF Core"
 description: "In this tutorial, you'll review and customize the CRUD (create, read, update, delete) code that the MVC scaffolding automatically creates for you in controllers and views."
-author: rick-anderson
+author: tdykstra
 ms.author: riande
 ms.custom: mvc
 ms.date: 02/04/2019
 ms.topic: tutorial
-no-loc: [".NET MAUI", "Mac Catalyst", "Blazor Hybrid", Home, Privacy, Kestrel, appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: data/ef-mvc/crud
 ---
 

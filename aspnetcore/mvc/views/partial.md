@@ -5,14 +5,13 @@ description: Discover how to use partial views to break up large markup files an
 ms.author: riande
 ms.custom: mvc
 ms.date: 06/12/2019
-no-loc: [".NET MAUI", "Mac Catalyst", "Blazor Hybrid", Home, Privacy, Kestrel, appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: mvc/views/partial
 ---
 # Partial views in ASP.NET Core
 
 By [Steve Smith](https://ardalis.com/), [Maher JENDOUBI](https://twitter.com/maherjend), [Rick Anderson](https://twitter.com/RickAndMSFT), and [Scott Sauber](https://twitter.com/scottsauber)
 
-A partial view is a [Razor](xref:mvc/views/razor) markup file (`.cshtml`) without an [`@page`](xref:mvc/views/razor#page) directive that renders HTML output *within* another markup file's rendered output.
+A partial view is a [Razor](xref:mvc/views/razor) markup file (`.cshtml`) without a [`@page`](xref:mvc/views/razor#page) directive that renders HTML output *within* another markup file's rendered output.
 
 :::moniker range=">= aspnetcore-2.1"
 
