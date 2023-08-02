@@ -69,6 +69,12 @@ For custom folders that hold components, add an [`@using`][2] directive to the p
 > [!NOTE]
 > [`@using`][2] directives in the `_Imports.razor` file are only applied to Razor files (`.razor`), not C# files (`.cs`).
 
+Aliased [`using`](/dotnet/csharp/language-reference/keywords/using-directive) statements are supported. In the following example, the public `WeatherForecast` class of the `GridRendering` component is made available as `WeatherForecast` in a component elsewhere in the app:
+
+```razor
+@using WeatherForecast = Pages.GridRendering.WeatherForecast
+```
+
 Components can also be referenced using their fully qualified names, which doesn't require an [`@using`][2] directive. The following example directly references the `ProductDetail` component in the `Components` folder of the app:
 
 ```razor
@@ -86,7 +92,6 @@ The namespace of a component authored with Razor is based on the following (in p
 The following are **not** supported:
 
 * The [`global::`](/dotnet/csharp/language-reference/operators/namespace-alias-qualifier) qualification.
-* Importing components with aliased [`using`](/dotnet/csharp/language-reference/keywords/using-statement) statements. For example, `@using Foo = Bar` isn't supported.
 * Partially-qualified names. For example, you can't add `@using BlazorSample` to a component and then reference the `NavMenu` component in the app's `Shared` folder (`Shared/NavMenu.razor`) with `<Shared.NavMenu></Shared.NavMenu>`.
 
 ### Partial class support
@@ -202,10 +207,28 @@ namespace BlazorSample.Pages
 
 Typical namespaces used by components:
 
-:::moniker range=">= aspnetcore-6.0"
+:::moniker range=">= aspnetcore-8.0"
 
 ```csharp
 using System.Net.Http;
+using System.Net.Http.Json;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Components.Routing;
+using Microsoft.AspNetCore.Components.Sections
+using Microsoft.AspNetCore.Components.Web;
+using Microsoft.AspNetCore.Components.Web.Virtualization;
+using Microsoft.JSInterop;
+```
+
+:::moniker-end
+
+:::moniker range=">= aspnetcore-6.0 < aspnetcore-8.0"
+
+```csharp
+using System.Net.Http;
+using System.Net.Http.Json;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Forms;
@@ -374,7 +397,7 @@ Component members are used in rendering logic using C# expressions that start wi
 > [!NOTE]
 > Examples throughout the Blazor documentation specify the [`private` access modifier](/dotnet/csharp/language-reference/keywords/private) for private members. Private members are scoped to a component's class. However, C# assumes the `private` access modifier when no access modifier is present, so explicitly marking members "`private`" in your own code is optional. For more information on access modifiers, see [Access Modifiers (C# Programming Guide)](/dotnet/csharp/programming-guide/classes-and-structs/access-modifiers).
 
-The Blazor framework processes a component internally as a [*render tree*](https://developer.mozilla.org/docs/Web/Performance/How_browsers_work#render), which is the combination of a component's [Document Object Model (DOM)](https://developer.mozilla.org/docs/Web/API/Document_Object_Model/Introduction) and [Cascading Style Sheet Object Model (CSSOM)](https://developer.mozilla.org/docs/Web/API/CSS_Object_Model). After the component is initially rendered, the component's render tree is regenerated in response to events. Blazor compares the new render tree against the previous render tree and applies any modifications to the browser's DOM for display. For more information, see <xref:blazor/components/rendering>.
+The Blazor framework processes a component internally as a [*render tree*](https://developer.mozilla.org/docs/Web/Performance/How_browsers_work#render), which is the combination of a component's DOM and [Cascading Style Sheet Object Model (CSSOM)](https://developer.mozilla.org/docs/Web/API/CSS_Object_Model). After the component is initially rendered, the component's render tree is regenerated in response to events. Blazor compares the new render tree against the previous render tree and applies any modifications to the browser's DOM for display. For more information, see <xref:blazor/components/rendering>.
 
 Razor syntax for C# control structures, directives, and directive attributes are lowercase (examples: [`@if`](xref:mvc/views/razor#conditionals-if-else-if-else-and-switch), [`@code`](xref:mvc/views/razor#code), [`@bind`](xref:mvc/views/razor#bind)). Property names are uppercase (example: `@Body` for <xref:Microsoft.AspNetCore.Components.LayoutComponentBase.Body?displayProperty=nameWithType>).
 
@@ -765,39 +788,21 @@ Don't use the [`init` accessor](/dotnet/csharp/language-reference/keywords/init)
 
 `Shared/RenderTupleChild.razor`:
 
-```csharp
-<div class="card w-50" style="margin-bottom:15px">
-    <div class="card-header font-weight-bold"><code>Tuple</code> Card</div>
-    <div class="card-body">
-        <ul>
-            <li>Integer: @Data?.Item1</li>
-            <li>String: @Data?.Item2</li>
-            <li>Boolean: @Data?.Item3</li>
-        </ul>
-    </div>
-</div>
-
-@code {
-    [Parameter]
-    public Tuple<int, string, bool>? Data { get; set; }
-}
-```
+:::code language="razor" source="~/../blazor-samples/6.0/BlazorSample_Server/Shared/index/RenderTupleChild.razor":::
 
 `Pages/RenderTupleParent.razor`:
 
-```csharp
-@page "/render-tuple-parent"
-
-<h1>Render <code>Tuple</code> Parent</h1>
-
-<RenderTupleChild Data="@data" />
-
-@code {
-    private Tuple<int, string, bool> data = new(999, "I aim to misbehave.", true);
-}
-```
+:::code language="razor" source="~/../blazor-samples/6.0/BlazorSample_Server/Pages/index/RenderTupleParent.razor":::
     
-Only ***unnamed tuples*** are supported for C# 7.0 or later in Razor components. [Named tuples](/dotnet/csharp/language-reference/builtin-types/value-tuples#tuple-field-names) support in Razor components is planned for a future ASP.NET Core release. For more information, see [Blazor Transpiler issue with named Tuples (dotnet/aspnetcore #28982)](https://github.com/dotnet/aspnetcore/issues/28982).
+[Named tuples](/dotnet/csharp/language-reference/builtin-types/value-tuples#tuple-field-names) are supported, as seen in the following example:
+
+`Shared/RenderNamedTupleChild.razor`:
+
+:::code language="razor" source="~/../blazor-samples/6.0/BlazorSample_Server/Shared/index/RenderNamedTupleChild.razor":::
+
+`Pages/RenderNamedTupleParent.razor`:
+
+:::code language="razor" source="~/../blazor-samples/6.0/BlazorSample_Server/Pages/index/RenderNamedTupleParent.razor":::
 
 Quote &copy;2005 [Universal Pictures](https://www.uphe.com): [Serenity](https://www.uphe.com/movies/serenity-2005) ([Nathan Fillion](https://www.imdb.com/name/nm0277213/))
 

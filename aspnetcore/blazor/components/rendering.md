@@ -41,6 +41,69 @@ In most cases, <xref:Microsoft.AspNetCore.Components.ComponentBase> conventions 
 
 For more information on the performance implications of the framework's conventions and how to optimize an app's component hierarchy for rendering, see <xref:blazor/performance#optimize-rendering-speed>.
 
+::: moniker range=">= aspnetcore-8.0"
+
+## Streaming rendering
+
+<!-- UPDATE AT 8.0 Cross-link 'server-side rendering (SSR)'
+     & will we be retaining the suppress-error attribute NOTE? -->
+
+Use *streaming rendering* with server-side rendering (SSR) to stream content updates on the response stream and improve the user experience for components that perform long-running asynchronous tasks to fully render.
+
+For example, consider a component that makes a long-running database query or web API call to render data when the page loads. Normally, asynchronous tasks executed as part of rendering a server-side component must complete before the rendered response is sent, which can delay loading the page. Any significant delay in rendering the page harms the user experience. To improve the user experience, streaming rendering initially renders the entire page quickly with placeholder content while asynchronous operations execute. After the operations are complete, the updated content is sent to the client on the same response connection and patched into the DOM.
+
+To stream content updates when using SSR, apply the `[StreamRendering(true)]` attribute to the component. Streaming rendering must be explicitly enabled because streamed updates may cause content on the page to shift. Components without the attribute automatically adopt streaming rendering if the parent component uses the feature. Pass `false` to the attribute in a child component to disable the feature at that point and further down the component subtree. The attribute is functional when applied to components supplied by a [Razor class library](xref:blazor/components/class-libraries).
+
+The following example is based on the `ShowData` component in an app created from the [Blazor Web App project template](xref:blazor/project-structure#blazor-web-app). The call to `Task.Delay(1000)` simulates retrieving weather data asynchronously. The component initially renders placeholder content ("`Loading...`") without waiting for the asynchronous delay to complete. When the asynchronous delay completes and the weather data content is generated, the content is streamed to the response and patched into the weather forecast table.
+
+`Pages/ShowData.razor`:
+
+```razor
+@page "/showdata"
+@attribute [StreamRendering(true)]
+
+...
+
+@if (forecasts == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        ...
+        <tbody>
+            @foreach (var forecast in forecasts)
+            {
+                <tr>
+                    <td>@forecast.Date.ToShortDateString()</td>
+                    <td>@forecast.TemperatureC</td>
+                    <td>@forecast.TemperatureF</td>
+                    <td>@forecast.Summary</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    ...
+
+    private WeatherForecast[]? forecasts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Task.Delay(1000);
+
+        ...
+
+        forecasts = ...
+    }
+}
+```
+
+:::moniker-end
+
 ## Suppress UI refreshing (`ShouldRender`)
 
 <xref:Microsoft.AspNetCore.Components.ComponentBase.ShouldRender%2A> is called each time a component is rendered. Override <xref:Microsoft.AspNetCore.Components.ComponentBase.ShouldRender%2A> to manage UI refreshing. If the implementation returns `true`, the UI is refreshed.
@@ -94,7 +157,7 @@ However, it might make sense to call <xref:Microsoft.AspNetCore.Components.Compo
 
 Due to the way that tasks are defined in .NET, a receiver of a <xref:System.Threading.Tasks.Task> can only observe its final completion, not intermediate asynchronous states. Therefore, <xref:Microsoft.AspNetCore.Components.ComponentBase> can only trigger rerendering when the <xref:System.Threading.Tasks.Task> is first returned and when the <xref:System.Threading.Tasks.Task> finally completes. The framework can't know to rerender a component at other intermediate points, such as when an <xref:System.Collections.Generic.IAsyncEnumerable%601> [returns data in a series of intermediate `Task`s](https://github.com/dotnet/aspnetcore/issues/43098#issuecomment-1206224427). If you want to rerender at intermediate points, call <xref:Microsoft.AspNetCore.Components.ComponentBase.StateHasChanged%2A> at those points.
 
-Consider the following `CounterState1` component, which updates the count four times on each click:
+Consider the following `CounterState1` component, which updates the count four times each time the `IncrementCount` method executes:
 
 * Automatic renders occur after the first and last increments of `currentCount`.
 * Manual renders are triggered by calls to <xref:Microsoft.AspNetCore.Components.ComponentBase.StateHasChanged%2A> when the framework doesn't automatically trigger rerenders at intermediate processing points where `currentCount` is incremented.

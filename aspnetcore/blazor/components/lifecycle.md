@@ -40,13 +40,13 @@ A parent component renders before its children components because rendering is w
 
 ![Component lifecycle events of a Razor component in Blazor](~/blazor/components/lifecycle/_static/lifecycle1.png)
 
-Document Object Model (DOM) event processing:
+DOM event processing:
 
 1. The event handler is run.
 1. If an incomplete <xref:System.Threading.Tasks.Task> is returned, the <xref:System.Threading.Tasks.Task> is awaited and then the component is rerendered.
 1. Render for all synchronous work and complete <xref:System.Threading.Tasks.Task>s.
 
-![Document Object Model (DOM) event processing](~/blazor/components/lifecycle/_static/lifecycle2.png)
+![DOM event processing](~/blazor/components/lifecycle/_static/lifecycle2.png)
 
 The `Render` lifecycle:
 
@@ -156,6 +156,14 @@ To prevent developer code in <xref:Microsoft.AspNetCore.Components.ComponentBase
 While a Blazor app is prerendering, certain actions, such as calling into JavaScript (JS interop), aren't possible. Components may need to render differently when prerendered. For more information, see the [Prerendering with JavaScript interop](#prerendering-with-javascript-interop) section.
 
 If event handlers are provided in developer code, unhook them on disposal. For more information, see the [Component disposal with `IDisposable` `IAsyncDisposable`](#component-disposal-with-idisposable-and-iasyncdisposable) section.
+
+::: moniker range=">= aspnetcore-8.0"
+
+<!-- UPDATE AT 8.0 Cross-link 'server-side rendering (SSR)' -->
+
+Use *streaming rendering* with server-side rendering (SSR) to improve the user experience for server-side components that perform long-running asynchronous tasks in <xref:Microsoft.AspNetCore.Components.ComponentBase.OnInitializedAsync%2A> to fully render. For more information, see <xref:blazor/components/rendering#streaming-rendering>.
+
+:::moniker-end
 
 ## After parameters are set (`OnParametersSet{Async}`)
 
@@ -386,16 +394,11 @@ JS interop object references are implemented as a map keyed by an identifier on 
 
 At a minimum, always dispose objects created on the .NET side to avoid leaking .NET managed memory.
 
-### Document Object Model (DOM) cleanup tasks during component disposal
+### DOM cleanup tasks during component disposal
 
-Don't execute JS interop code for DOM cleanup tasks during component disposal. Instead, use the [`MutationObserver`](https://developer.mozilla.org/docs/Web/API/MutationObserver) pattern in JavaScript on the client for the following reasons:
+For more information, see <xref:blazor/js-interop/index#dom-cleanup-tasks-during-component-disposal>.
 
-* The component may have been removed from the DOM by the time your cleanup code executes in `Dispose{Async}`.
-* In a Blazor Server app, the Blazor renderer may have been disposed by the framework by the time your cleanup code executes in `Dispose{Async}`.
-
-The [`MutationObserver`](https://developer.mozilla.org/docs/Web/API/MutationObserver) pattern allows you to run a function when an element is removed from the DOM.
-
-For guidance on <xref:Microsoft.JSInterop.JSDisconnectedException> in Blazor Server apps when a circuit is disconnected, see <xref:blazor/js-interop/call-javascript-from-dotnet#javascript-interop-calls-without-a-circuit> or <xref:blazor/js-interop/call-dotnet-from-javascript#javascript-interop-calls-without-a-circuit>. For general JavaScript interop error handling guidance, see the *JavaScript interop* section in <xref:blazor/fundamentals/handle-errors>. <!-- AUTHOR NOTE: The JavaScript interop section isn't linked because the section title changed across versions of the doc. Prior to 6.0, the section appears twice, once for Blazor Server and once for Blazor WebAssembly, each with the hosting model name in the section name. -->
+For guidance on <xref:Microsoft.JSInterop.JSDisconnectedException> in Blazor Server apps when a circuit is disconnected, see <xref:blazor/js-interop/index#javascript-interop-calls-without-a-circuit>. For general JavaScript interop error handling guidance, see the *JavaScript interop* section in <xref:blazor/fundamentals/handle-errors>. <!-- AUTHOR NOTE: The JavaScript interop section isn't linked because the section title changed across versions of the doc. Prior to 6.0, the section appears twice, once for Blazor Server and once for Blazor WebAssembly, each with the hosting model name in the section name. -->
 
 ### Synchronous `IDisposable`
 

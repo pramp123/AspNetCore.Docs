@@ -5,14 +5,12 @@ description: Discover how to handle errors in ASP.NET Core apps.
 monikerRange: '>= aspnetcore-3.1'
 ms.author: riande
 ms.custom: mvc
-ms.date: 06/30/2023
+ms.date: 07/06/2023
 uid: fundamentals/error-handling
 ---
 # Handle errors in ASP.NET Core
 
-:::moniker range="< aspnetcore-7.0"
 [!INCLUDE[](~/includes/not-latest-version.md)]
-:::moniker-end
 
 :::moniker range=">= aspnetcore-8.0"
 
@@ -95,7 +93,9 @@ The following code uses a lambda for exception handling:
 
 [IExceptionHandler](https://source.dot.net/#Microsoft.AspNetCore.Diagnostics/ExceptionHandler/IExceptionHandler.cs,adae2915ad0c6dc5) is an interface that gives the developer a callback for handling known exceptions in a central location.
 
-`IExceptionHandler` implementations are registered by calling [`IServiceCollection.AddExceptionHandler<T>`](https://source.dot.net/#Microsoft.AspNetCore.Diagnostics/ExceptionHandler/ExceptionHandlerServiceCollectionExtensions.cs,e74aac24e3e2cbc9). Multiple implementations can be added, and they're called in the order registered. If an exception handler handles a request, it can return `true` to stop processing. If an exception isn't handled by any exception handler, then control falls back to the default behavior and options from the middleware. Different metrics and logs are emitted for handled versus unhandled exceptions.
+`IExceptionHandler` implementations are registered by calling [`IServiceCollection.AddExceptionHandler<T>`](https://source.dot.net/#Microsoft.AspNetCore.Diagnostics/ExceptionHandler/ExceptionHandlerServiceCollectionExtensions.cs,e74aac24e3e2cbc9). The lifetime of an `IExceptionHandler` instance is singleton. Multiple implementations can be added, and they're called in the order registered.
+
+If an exception handler handles a request, it can return `true` to stop processing. If an exception isn't handled by any exception handler, then control falls back to the default behavior and options from the middleware. Different metrics and logs are emitted for handled versus unhandled exceptions.
 
 The following example shows an `IExceptionHandler` implementation:
 
@@ -261,7 +261,7 @@ For information about how to handle model state errors, see [Model binding](xref
 
 The following code configures the app to generate a problem details response for all HTTP client and server error responses that ***don't have a body content yet***:
 
-:::code language="csharp" source="~/fundamentals/error-handling/samples/7.x/ErrorHandlingSample/Snippets/Program.cs" id="snippet_AddProblemDetails" highlight="3":::
+:::code language="csharp" source="~/fundamentals/error-handling/samples/7.x/ErrorHandlingSample/Snippets/Program.cs" id="snippet_AddProblemDetails" highlight="1":::
 
 The next section shows how to customize the problem details response body.
 
@@ -300,7 +300,7 @@ An <xref:Microsoft.AspNetCore.Http.IProblemDetailsWriter> implementation can be 
 
 :::code language="csharp" source="~/../AspNetCore.Docs.Samples/fundamentals/middleware/problem-details-service/SampleProblemDetailsWriter.cs" :::
 
-***Note:*** When using a custom `IProblemDetailsWriter`, the custom `IProblemDetailsWriter` must be registered before calling <xref:Microsoft.Extensions.DependencyInjection.MvcServiceCollectionExtensions.AddRazorPages%2A>, <xref:Microsoft.Extensions.DependencyInjection.MvcServiceCollectionExtensions.AddControllers%2A>, or <xref:Microsoft.Extensions.DependencyInjection.MvcServiceCollectionExtensions.AddControllersWithViews%2A>:
+***Note:*** When using a custom `IProblemDetailsWriter`, the custom `IProblemDetailsWriter` must be registered before calling <xref:Microsoft.Extensions.DependencyInjection.MvcServiceCollectionExtensions.AddRazorPages%2A>, <xref:Microsoft.Extensions.DependencyInjection.MvcServiceCollectionExtensions.AddControllers%2A>, <xref:Microsoft.Extensions.DependencyInjection.MvcServiceCollectionExtensions.AddControllersWithViews%2A>, or <xref:Microsoft.Extensions.DependencyInjection.MvcServiceCollectionExtensions.AddMvc%2A>:
 
 :::code language="csharp" source="~/../AspNetCore.Docs.Samples/fundamentals/middleware/problem-details-service/Program.cs" id="snippet_sampleproblemdetailswriter" :::
 

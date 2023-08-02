@@ -14,6 +14,7 @@ ASP.NET Core 8.0 introduces support for [.NET native ahead-of-time (AOT)](/dotne
 
 > [!WARNING]
 > In .NET 8, not all ASP.NET Core features are compatible with native AOT.
+> See [this GitHub issue](https://github.com/dotnet/core/issues/8288) for a list of known native AOT issues.
 
 ## Why use native AOT with ASP.NET Core
 
@@ -235,12 +236,13 @@ Run the `dotnet build` command to see the generated code. The output includes an
 
 The `dotnet publish` command also compiles the source files and generates files that are compiled. In addition, `dotnet publish` passes the generated assemblies to a native IL compiler. The IL compiler produces the native executable. The native executable contains the native machine code.
 
-## See also
-
-* <xref:fundamentals/native-aot-tutorial>
-* [Native AOT deployment](/dotnet/core/deploying/native-aot/)
-
+[!INCLUDE[](~/fundamentals/aot/includes/aot_lib.md)]
 
 ## Known issues
 
 See [this GitHub issue](https://github.com/dotnet/core/issues/8288) to report or review issues with native AOT support in ASP.NET Core.
+
+## See also
+
+* <xref:fundamentals/native-aot-tutorial>
+* [Native AOT deployment](/dotnet/core/deploying/native-aot/)

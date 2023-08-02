@@ -3,8 +3,8 @@ title: "Tutorial: Create a web API with ASP.NET Core"
 author: wadepickett
 description: Learn how to build a web API with ASP.NET Core.
 ms.author: wpickett
-ms.custom: mvc, engagement-fy23
-ms.date: 05/17/2023
+ms.custom: mvc, engagement-fy24
+ms.date: 07/28/2023
 uid: tutorials/first-web-api
 ---
 
@@ -148,8 +148,26 @@ Visual Studio launches the default browser and navigates to `https://localhost:<
 
 Run the app:
 
-* Press Ctrl+F5 to run the app.
-* Visual Studio Code launches the default browser to `https://localhost:<port>`, where `<port>` is the randomly chosen port number displayed in the output. There is no endpoint at `https://localhost:<port>` so the browser returns [HTTP 404 Not Found](https://developer.mozilla.org/docs/Web/HTTP/Status/404). Append `/swagger` to the URL, `https://localhost:<port>/swagger`.
+* Run the following command to start the app on the `https` profile:
+
+  ```dotnetcli
+  dotnet run --launch-profile https
+  ```
+
+ The output shows messages similar to the following, indicating that the app is running and awaiting requests:
+
+   ```output
+   ...
+   info: Microsoft.Hosting.Lifetime[14]
+         Now listening on: https://localhost:{port}
+   ...
+   ```
+
+* <kbd>Ctrl</kbd>+*click* the HTTPS URL in the output to test the web app in a browser.
+
+* The default browser is launched to `https://localhost:<port>`, where `<port>` is the randomly chosen port number displayed in the output. There is no endpoint at `https://localhost:<port>`, so the browser returns [HTTP 404 Not Found](https://developer.mozilla.org/docs/Web/HTTP/Status/404). Append `/swagger` to the URL, `https://localhost:<port>/swagger`.
+
+After testing the web app in the following instruction, press <kbd>Ctrl</kbd>+<kbd>C</kbd> in the integrated terminal to shut it down.
 
 # [Visual Studio for Mac](#tab/visual-studio-mac)
 
@@ -302,6 +320,7 @@ dotnet add package Microsoft.EntityFrameworkCore.Design -v 7.0.0
 dotnet add package Microsoft.EntityFrameworkCore.SqlServer -v 7.0.0
 dotnet tool uninstall -g dotnet-aspnet-codegenerator
 dotnet tool install -g dotnet-aspnet-codegenerator
+dotnet tool update -g dotnet-aspnet-codegenerator
 ```
 
 The preceding commands:
@@ -309,12 +328,14 @@ The preceding commands:
 * Add NuGet packages required for scaffolding.
 * Install the scaffolding engine (`dotnet-aspnet-codegenerator`) after uninstalling any possible previous version.
 
+[!INCLUDE[](~/includes/dotnet-tool-install-arch-options.md)]
+
 Build the project.
 
 Run the following command:
 
   ```dotnetcli
-  dotnet-aspnet-codegenerator controller -name TodoItemsController -async -api -m TodoItem -dc TodoContext -outDir Controllers
+  dotnet aspnet-codegenerator controller -name TodoItemsController -async -api -m TodoItem -dc TodoContext -outDir Controllers
   ```
 
 The preceding command scaffolds the `TodoItemsController`.

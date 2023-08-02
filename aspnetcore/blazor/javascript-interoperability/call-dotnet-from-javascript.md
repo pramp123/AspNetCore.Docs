@@ -1338,24 +1338,19 @@ JS interop object references are implemented as a map keyed by an identifier on 
 
 At a minimum, always dispose objects created on the .NET side to avoid leaking .NET managed memory.
 
-## Document Object Model (DOM) cleanup tasks during component disposal
+## DOM cleanup tasks during component disposal
 
-Don't execute JS interop code for DOM cleanup tasks during component disposal. Instead, use the [`MutationObserver`](https://developer.mozilla.org/docs/Web/API/MutationObserver) pattern in JavaScript on the client for the following reasons:
-
-* The component may have been removed from the DOM by the time your cleanup code executes in `Dispose{Async}`.
-* In a Blazor Server app, the Blazor renderer may have been disposed by the framework by the time your cleanup code executes in `Dispose{Async}`.
-
-The [`MutationObserver`](https://developer.mozilla.org/docs/Web/API/MutationObserver) pattern allows you to run a function when an element is removed from the DOM.
+For more information, see <xref:blazor/js-interop/index#dom-cleanup-tasks-during-component-disposal>.
 
 ## JavaScript interop calls without a circuit
 
-[!INCLUDE[](~/blazor/includes/js-interop/circuit-disconnection.md)]
+For more information, see <xref:blazor/js-interop/index#javascript-interop-calls-without-a-circuit>.
 
 ## Additional resources
 
 * <xref:blazor/js-interop/call-javascript-from-dotnet>
 * [`InteropComponent.razor` example (dotnet/AspNetCore GitHub repository `main` branch)](https://github.com/dotnet/AspNetCore/blob/main/src/Components/test/testassets/BasicTestApp/InteropComponent.razor): The `main` branch represents the product unit's current development for the next release of ASP.NET Core. To select the branch for a different release (for example, `release/5.0`), use the **Switch branches or tags** dropdown list to select the branch.
-* [Interaction with the Document Object Model (DOM)](xref:blazor/js-interop/index#interaction-with-the-document-object-model-dom)
+* [Interaction with the DOM](xref:blazor/js-interop/index#interaction-with-the-dom)
 * [Blazor samples GitHub repository (`dotnet/blazor-samples`)](https://github.com/dotnet/blazor-samples)
 * <xref:blazor/fundamentals/handle-errors> (*JavaScript interop* section) <!-- AUTHOR NOTE: The JavaScript interop section isn't linked because the section title changed across versions of the doc. Prior to 6.0, the section appears twice, once for Blazor Server and once for Blazor WebAssembly, each with the hosting model name in the section name. -->
 * [Blazor Server threat mitigation: .NET methods invoked from the browser](xref:blazor/security/server/threat-mitigation#net-methods-invoked-from-the-browser)

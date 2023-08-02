@@ -51,10 +51,10 @@ Don't store sensitive information, such as credentials, security tokens, or sens
 
 ## External content rendered in an `iframe`
 
-When using an [`iframe`](https://developer.mozilla.org/docs/Web/HTML/Element/iframe) to display external content within a Blazor Hybrid page, we recommend that users leverage [sandboxing features](https://developer.mozilla.org/docs/Web/HTML/Element/iframe) to ensure that the content is isolated from the parent page containing the app. In the following Razor component example, the [`sandbox` attribute](https://developer.mozilla.org/docs/Web/HTML/Element/iframe) is present for the `<iframe>` tag to apply sandboxing features to the `foo.html` page:
+When using an [`iframe`](https://developer.mozilla.org/docs/Web/HTML/Element/iframe) to display external content within a Blazor Hybrid page, we recommend that users leverage [sandboxing features](https://developer.mozilla.org/docs/Web/HTML/Element/iframe) to ensure that the content is isolated from the parent page containing the app. In the following Razor component example, the [`sandbox` attribute](https://developer.mozilla.org/docs/Web/HTML/Element/iframe) is present for the `<iframe>` tag to apply sandboxing features to the `admin.html` page:
 
 ```razor
-<iframe sandbox src="https://contoso.com/foo.html" />
+<iframe sandbox src="https://contoso.com/admin.html" />
 ```
 
 > [!WARNING]
@@ -76,6 +76,11 @@ Use one of the following approaches to keep the Web View current in deployed app
 ### Android
 
 The Android Web View is distributed and updated via the [Google Play Store](https://play.google.com/store/apps/details?id=com.google.android.webview). Check the Web View version by reading the [`User-Agent`](https://developer.mozilla.org/docs/Web/HTTP/Headers/User-Agent) string. Read the Web View's [`navigator.userAgent`](https://developer.mozilla.org/docs/Web/API/Navigator/userAgent) property using [JavaScript interop](xref:blazor/js-interop/index) and optionally cache the value using a singleton service if the user agent string is required outside of a Razor component context.
+
+When using the Android Emulator:
+
+* Use an emulated device with **Google Play Services** preinstalled. Emulated devices without Google Play Services preinstalled are ***not*** supported.
+* Install Google Chrome from the Google Play Store. If Google Chrome is already installed, [update Chrome from the Google Play Store](https://support.google.com/chrome/answer/95414?hl=en&co=GENIE.Platform%3DAndroid). If an emulated device doesn't have the latest version of Chrome installed, it might not have the latest version of the Android Web View installed.
 
 ### iOS/:::no-loc text="Mac Catalyst":::
 

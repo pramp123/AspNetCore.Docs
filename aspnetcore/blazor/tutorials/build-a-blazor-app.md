@@ -12,13 +12,6 @@ uid: blazor/tutorials/build-a-blazor-app
 
 [!INCLUDE[](~/includes/not-latest-version.md)]
 
-:::moniker range=">= aspnetcore-8.0"
-
-> [!IMPORTANT]
-> This is the .NET 8 preview version of this article, which is currently undergoing updates for .NET 8. Some of the features described might not be available or fully working at this time. The work on this article will be completed when .NET 8 reaches the *Release Candidate* stage, which is currently scheduled for September. For the current release, see the [.NET 7 version of this article](?view=aspnetcore-7.0&preserve-view=true).
-
-:::moniker-end
-
 This tutorial provides a basic working experience for building and modifying a Blazor app. For detailed Blazor guidance, see the [Blazor reference documentation](xref:blazor/index).
 
 Learn how to:
@@ -52,8 +45,10 @@ At the end of this tutorial, you'll have a working todo list app.
 Create a new Blazor app named `TodoList` in a command shell:
 
 ```dotnetcli
-dotnet new blazor -o TodoList
+dotnet new blazor -o TodoList --use-server
 ```
+
+The `-o|--output` option creates a folder for the project. If you've created a folder for the project and the command shell is open in that folder, omit the `-o|--output` option and value to create the project. The `--use-server` option enables interactivity with server-side rendering (SSR).
 
 :::moniker-end
 
@@ -125,19 +120,19 @@ Open the `Todo` component in any file editor and add an `@page` Razor directive 
 
 :::moniker range=">= aspnetcore-8.0"
 
-:::code language="razor" source="build-a-blazor-app/8.0/Todo0.razor" highlight="1":::
+:::code language="razor" source="build-a-blazor-app/8.0/Todo0.razor" highlight="1-4":::
 
 :::moniker-end
 
 :::moniker range=">= aspnetcore-7.0 < aspnetcore-8.0"
 
-:::code language="razor" source="build-a-blazor-app/7.0/Todo0.razor" highlight="1":::
+:::code language="razor" source="build-a-blazor-app/7.0/Todo0.razor" highlight="1-3":::
 
 :::moniker-end
 
 :::moniker range=">= aspnetcore-6.0 < aspnetcore-7.0"
 
-:::code language="razor" source="build-a-blazor-app/6.0/Todo0.razor" highlight="1":::
+:::code language="razor" source="build-a-blazor-app/6.0/Todo0.razor" highlight="1-3":::
 
 :::moniker-end
 
@@ -248,7 +243,7 @@ Return to the `Todo` component and perform the following tasks:
 
 :::moniker range=">= aspnetcore-8.0"
 
-:::code language="razor" source="build-a-blazor-app/8.0/Todo2.razor" highlight="7-12,15":::
+:::code language="razor" source="build-a-blazor-app/8.0/Todo2.razor" highlight="8-13,16":::
 
 :::moniker-end
 
@@ -280,7 +275,7 @@ The app requires UI elements for adding todo items to the list. Add a text input
 
 :::moniker range=">= aspnetcore-8.0"
 
-:::code language="razor" source="build-a-blazor-app/8.0/Todo3.razor" highlight="14-15":::
+:::code language="razor" source="build-a-blazor-app/8.0/Todo3.razor" highlight="15-16":::
 
 :::moniker-end
 
@@ -372,7 +367,7 @@ Update the `AddTodo` method to add the `TodoItem` with the specified title to th
 
 :::moniker range=">= aspnetcore-8.0"
 
-:::code language="razor" source="build-a-blazor-app/8.0/Todo6.razor" highlight="21-28":::
+:::code language="razor" source="build-a-blazor-app/8.0/Todo6.razor" highlight="22-29":::
 
 :::moniker-end
 
@@ -416,11 +411,13 @@ The title text for each todo item can be made editable, and a checkbox can help 
 </ul>
 ```
 
-Update the `<h1>` header to show a count of the number of todo items that aren't complete (`IsDone` is `false`). The Razor expression in the following header evaluates each time Blazor rerenders the component.
+Update the `<h3>` header to show a count of the number of todo items that aren't complete (`IsDone` is `false`). The Razor expression in the following header evaluates each time Blazor rerenders the component.
 
 ```razor
-<h1>Todo (@todos.Count(todo => !todo.IsDone))</h1>
+<h3>Todo (@todos.Count(todo => !todo.IsDone))</h3>
 ```
+
+<!-- UPDATE FOR 8.0 Re-enable the completed component display after the 8.0 sample app is created
 
 The completed `Todo` component (`Pages/Todo.razor`):
 
@@ -453,6 +450,8 @@ The completed `Todo` component (`Pages/Todo.razor`):
 :::code language="razor" source="~/../blazor-samples/3.1/BlazorSample_WebAssembly/Pages/build-a-blazor-app/Todo.razor":::
 
 :::moniker-end
+
+-->
 
 Save the `Pages/Todo.razor` file. The app is automatically rebuilt in the command shell, and the page reloads in the browser.
 

@@ -4,14 +4,14 @@ author: rick-anderson
 description: Learn about the new features in ASP.NET Core 8.0.
 ms.author: riande
 ms.custom: mvc
-ms.date: 06/30/2023
+ms.date: 07/28/2023
 uid: aspnetcore-8
 ---
 # What's new in ASP.NET Core 8.0
 
 This article highlights the most significant changes in ASP.NET Core 8.0 with links to relevant documentation.
 
-This article is under development and not complete. More information may be found in the ASP.NET Core 8.0 preview blogs and GitHub issue:
+This article is under development and not complete. More information may be found in the ASP.NET Core 8.0 preview blogs and GitHub issues:
 
 * [ASP.NET Core roadmap for .NET 8 on GitHub](https://github.com/dotnet/aspnetcore/issues/44984) 
 * [What's new in .NET 8 Preview 1](https://devblogs.microsoft.com/dotnet/asp-net-core-updates-in-dotnet-8-preview-1/)
@@ -19,10 +19,12 @@ This article is under development and not complete. More information may be foun
 * [What's new in .NET 8 Preview 3](https://devblogs.microsoft.com/dotnet/asp-net-core-updates-in-dotnet-8-preview-3/)
 * [What's new in .NET 8 Preview 4](https://devblogs.microsoft.com/dotnet/asp-net-core-updates-in-dotnet-8-preview-4/)
 * [What's new in .NET 8 Preview 5](https://devblogs.microsoft.com/dotnet/asp-net-core-updates-in-dotnet-8-preview-5/)
-<!--
 * [What's new in .NET 8 Preview 6](https://devblogs.microsoft.com/dotnet/asp-net-core-updates-in-dotnet-8-preview-6/)
+<!--
 * [What's new in .NET 8 Preview 7](https://devblogs.microsoft.com/dotnet/asp-net-core-updates-in-dotnet-8-preview-7/)
 -->
+
+[!INCLUDE [](~/includes/preview-notice.md)]
 
 <!--
 ## Blazor
@@ -121,6 +123,38 @@ builder.On<string, string>("ReceiveMessage", (user, message) => ...
 await builder.StartAsync();
 ```
 
+### SignalR seamless reconnect
+
+SignalR seamless reconnect reduces the perceived downtime of clients that have a temporary disconnect in their network connection, such as when switching network connections or a short temporary loss in access.
+
+Seamless reconnect achieves this by:
+
+* Temporarily buffering data on the server and client.
+* Acknowledging messages received (ACK-ing) by both the server and client.
+* Recognizing when a connection is returning and replaying messages that may have been sent while the connection was down.
+
+To opt-in to seamless reconnect:
+
+* Update the .NET client code to enable the `UseAcks` option:
+
+  ```csharp
+  var hubConnection = new HubConnectionBuilder()
+      .WithUrl("<hub url>",
+               options =>
+               {
+                  options.UseAcks = true;
+               })
+      .Build();
+  ```
+
+* Update the server hub endpoint configuration to enable the `AllowAcks` option:
+
+  ```csharp
+  app.MapHub<AppHub>("/default", o => o.AllowAcks = true);
+  ```
+
+For more information on the progress of the seamless reconnect feature for ASP.NET Core 8.0, see [dotnet/aspnetcore #46691](https://github.com/dotnet/aspnetcore/issues/46691).
+
 ## Minimal APIs
 
 This section describes new features for minimal APIs. See also [the section on native AOT](#native-aot) for more information relevant to minimal APIs.
@@ -133,6 +167,20 @@ For more information, see:
 
 * [Explicit binding from form values](xref:fundamentals/minimal-apis/parameter-binding?view=aspnetcore-8.0&preserve-view=true#explicit-binding-from-form-values).
 * [Binding to forms with IFormCollection, IFormFile, and IFormFileCollection](xref:fundamentals/minimal-apis/parameter-binding?view=aspnetcore-8.0&preserve-view=true#binding-to-forms-with-iformcollection-iformfile-and-iformfilecollection).
+
+Binding from forms is now supported for:
+
+* Collections, for example [List](/dotnet/api/system.collections.generic.list-1) and [Dictionary](/dotnet/api/system.collections.generic.dictionary-2)
+* Complex types, for example, `Todo` or `Project`
+
+The following code shows:
+
+* A minimal endpoint that binds a multi-part form input to a complex object.
+* How to use the anti-forgery services to support the generation and validation of anti-forgery tokens.
+
+:::code language="csharp" source="~/fundamentals/minimal-apis/parameter-binding/samples8/ComplexBinding/Program.cs":::
+
+For more information, see [Bind to collections and complex types from forms](xref:fundamentals/minimal-apis/parameter-binding#bindcc).
 
 ### Support for AsParameters and automatic metadata generation
 
@@ -147,9 +195,19 @@ The preceding generated code:
 * Annotates the endpoint metadata to indicate that it accepts a JSON payload.
 * Annotate the endpoint metadata to indicate that it returns a Todo as a JSON payload.
 
+### New IResettable interface in ObjectPool
+
+[Microsoft.Extensions.ObjectPool](xref:Microsoft.Extensions.ObjectPool) provides support for pooling object instances in memory. Apps can use an object pool if the values are expensive to allocate or initialize.
+
+In this release, we've made the object pool easier to use by adding the <xref:Microsoft.Extensions.ObjectPool.IResettable> interface. Reusable types often need to be reset back to a default state between uses. `IResettable` types are automatically reset when returned to an object pool.
+
+For more information, see the [ObjectPool sample](xref:performance/ObjectPool##objectpool-sample).
+
 ## Native AOT
 
 Support for [.NET native ahead-of-time (AOT)](/dotnet/core/deploying/native-aot/) has been added. Apps that are published using AOT can have substantially better performance: smaller app size, less memory usage, and faster startup time. Native AOT is currently supported by gRPC, minimal API, and worker service apps. For more information, see <xref:fundamentals/native-aot> and <xref:fundamentals/native-aot-tutorial>. For information about known issues with ASP.NET Core and native AOT compatibility, see GitHub issue [dotnet/core #8288](https://github.com/dotnet/core/issues/8288).
+
+[!INCLUDE[](~/fundamentals/aot/includes/aot_lib.md)]
 
 ### New project template
 
@@ -246,6 +304,16 @@ builder.WebHost.ConfigureKestrel(serverOptions =>
 
 For more information about this feature and how to use .NET and gRPC to create an IPC server and client, see <xref:grpc/interprocess>.
 
+### Performance improvements to named pipes transport
+
+We’ve improved named pipe connection performance. Kestrel’s named pipe transport now accepts connections in parallel, and reuses <xref:System.IO.Pipes.NamedPipeServerStream> instances.
+
+Time to create 100,000 connections:
+
+* Before : 5.916 seconds
+* After &nbsp; : 2.374 seconds
+
+
 ### HTTP/3 enabled by default in Kestrel
 
 HTTP/3 is a new internet technology that was standardized in June 2022. HTTP/3 offers several advantages over older HTTP protocols, including:
@@ -280,6 +348,18 @@ ASPNETCORE_URLS=http://*:80/;http://*:8080/;https://*:443/;https://*:8081/
 ```
 
 For more information, see <xref:fundamentals/servers/kestrel/endpoints> and <xref:fundamentals/servers/httpsys>.
+
+### SNI host name in ITlsHandshakeFeature
+
+The Server Name Indication (SNI) host name is now exposed in the [HostName](https://source.dot.net/#Microsoft.AspNetCore.Connections.Abstractions/Features/ITlsHandshakeFeature.cs,29) property of the <xref:Microsoft.AspNetCore.Connections.Features.ITlsHandshakeFeature> interface.
+
+SNI is part of the [TLS handshake](https://auth0.com/blog/the-tls-handshake-explained/) process. It allows clients to specify the host name they're attempting to connect to when the server hosts multiple virtual hosts or domains. To present the correct security certificate during the handshake process, the server needs to know the host name selected for each request. 
+
+Normally the host name is only handled within the TLS stack and is used to select the matching certificate. But by exposing it, other components in an app can use that information for purposes such as diagnostics, rate limiting, routing, and billing.
+
+Exposing the host name is particularly useful for large-scale services managing thousands of SNI bindings. This feature can significantly improve debugging efficiency during customer escalations. The increased transparency allows for faster problem resolution and enhanced service reliability.
+
+For more information, see [ITlsHandshakeFeature.HostName](https://source.dot.net/#Microsoft.AspNetCore.Connections.Abstractions/Features/ITlsHandshakeFeature.cs,30).
 
 ### IHttpSysRequestTimingFeature
 
@@ -475,6 +555,72 @@ Metrics have been added for ASP.NET Core hosting, Kestrel, and SignalR. For more
 `IExceptionHandler` implementations are registered by calling [`IServiceCollection.AddExceptionHandler<T>`](https://source.dot.net/#Microsoft.AspNetCore.Diagnostics/ExceptionHandler/ExceptionHandlerServiceCollectionExtensions.cs,e74aac24e3e2cbc9). Multiple implementations can be added, and they're called in the order registered. If an exception handler handles a request, it can return `true` to stop processing. If an exception isn't handled by any exception handler, then control falls back to the default behavior and options from the middleware.
 
 For more information, see [IExceptionHandler](xref:fundamentals/error-handling#iexceptionhandler).
+
+### Improved debugging experience
+
+[Debug customization attributes](/visualstudio/debugger/using-the-debuggerdisplay-attribute) have been added to types like `HttpContext`, `HttpRequest`, `HttpResponse`, `ClaimsPrincipal`, and `WebApplication`. The enhanced debugger displays for these types make finding important information easier in an IDE's debugger. The following screenshots show the difference that these attributes make in the debugger's display of `HttpContext`.
+
+.NET 7:
+
+:::image type="content" source="~/release-notes/static/httpcontext-debugging-before.png" alt-text="Unhelpful debugger display of HttpContext type in .NET 7.":::
+
+.NET 8:
+
+:::image type="content" source="~/release-notes/static/httpcontext-debugging-after.png" alt-text="Helpful debugger display of HttpContext type in .NET 8.":::
+
+The debugger display for `WebApplication` highlights important information such as configured endpoints, middleware, and `IConfiguration` values.
+
+.NET 7:
+
+:::image type="content" source="~/release-notes/static/webapplication-debugging-before.png" alt-text="Unhelpful debugger display of WebApplication type in .NET 7.":::
+
+.NET 8:
+
+:::image type="content" source="~/release-notes/static/webapplication-debugging-after.png" alt-text="Helpful debugger display of WebApplication type in .NET 8.":::
+
+For more information about debugging improvements in .NET 8, see GitHub issue [dotnet/aspnetcore 48205](https://github.com/dotnet/aspnetcore/issues/48205). 
+
+### `IPNetwork.Parse` and `TryParse`
+
+The new <xref:System.Net.IPNetwork.Parse%2A> and <xref:System.Net.IPNetwork.TryParse%2A> methods on <xref:System.Net.IPNetwork> add support for creating an `IPNetwork` by using an input string in [CIDR notation](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing) or "slash notation".
+
+Here are IPv4 examples:
+
+```csharp
+// Using Parse
+var network = IPNetwork.Parse("192.168.0.1/32");
+```
+
+```csharp
+// Using TryParse
+bool success = IPNetwork.TryParse("192.168.0.1/32", out var network);
+```
+
+```csharp
+// Constructor equivalent
+var network = new IPNetwork(IPAddress.Parse("192.168.0.1"), 32);
+```
+
+And here are examples for IPv6:
+
+```csharp
+// Using Parse
+var network = IPNetwork.Parse("2001:db8:3c4d::1/128");
+```
+
+```csharp
+// Using TryParse
+bool success = IPNetwork.TryParse("2001:db8:3c4d::1/128", out var network);
+```
+
+```csharp
+// Constructor equivalent
+var network = new IPNetwork(IPAddress.Parse("2001:db8:3c4d::1"), 128);
+```
+
+### Redis-based output caching
+
+ASP.NET Core 8 adds support for using Redis as a distributed cache for output caching. Output caching is a feature that enables an app to cache the output of a minimal API endpoint, controller action, or Razor Page. For more information, see [Output caching](xref:performance/caching/output#cache-storage).
 
 <!--
 ## API controllers

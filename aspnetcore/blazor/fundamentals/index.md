@@ -38,26 +38,29 @@ The following is an example counter component and part of an app created from a 
 
 `Pages/Counter.razor`:
 
-```razor
-@page "/counter"
+:::moniker range=">= aspnetcore-7.0"
 
-<PageTitle>Counter</PageTitle>
+:::code language="razor" source="~/../blazor-samples/7.0/BlazorSample_WebAssembly/Pages/Counter.razor":::
 
-<h1>Counter</h1>
+:::moniker-end
 
-<p role="status">Current count: @currentCount</p>
+:::moniker range=">= aspnetcore-6.0 < aspnetcore-7.0"
 
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+:::code language="razor" source="~/../blazor-samples/6.0/BlazorSample_WebAssembly/Pages/Counter.razor":::
 
-@code {
-    private int currentCount = 0;
+:::moniker-end
 
-    private void IncrementCount()
-    {
-        currentCount++;
-    }
-}
-```
+:::moniker range=">= aspnetcore-5.0 < aspnetcore-6.0"
+
+:::code language="razor" source="~/../blazor-samples/5.0/BlazorSample_WebAssembly/Pages/Counter.razor":::
+
+:::moniker-end
+
+:::moniker range="< aspnetcore-5.0"
+
+:::code language="razor" source="~/../blazor-samples/3.1/BlazorSample_WebAssembly/Pages/Counter.razor":::
+
+:::moniker-end
 
 The preceding `Counter` component:
 
@@ -65,6 +68,15 @@ The preceding `Counter` component:
 * Sets its page title and heading.
 * Renders the current count with `@currentCount`. `currentCount` is an integer variable defined in the C# code of the `@code` block.
 * Displays a button to trigger the `IncrementCount` method, which is also found in the `@code` block and increases the value of the `currentCount` variable.
+
+## Document Object Model (DOM)
+
+In Blazor documentation, references to the *Document Object Model* use the abbreviation *DOM*.
+
+For more information, see the following resources:
+
+* [Introduction to the DOM (MDN documentation)](https://developer.mozilla.org/docs/Web/API/Document_Object_Model/Introduction)
+* [Level 1 Document Object Model Specification (W3C)](https://www.w3.org/TR/WD-DOM/)
 
 ## Sample apps
 
